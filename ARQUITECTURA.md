@@ -1,297 +1,385 @@
-# 🏗️ Arquitectura del Sistema — Agente de Conocimiento
+# Arquitectura — Santos Pegasus Knowledge Agent
 
-## 📋 Contenidos
-
-1. [Visión General](#visión-general)
-2. [Diagrama de Capas](#diagrama-de-capas)
-3. [Backend: Arquitectura Hexagonal](#backend-arquitectura-hexagonal)
-4. [Frontend: Componentes React](#frontend-componentes-react)
-5. [Pipeline RAG Detallado](#pipeline-rag-detallado)
-6. [Flujos de Datos](#flujos-de-datos)
+Este documento explica **cómo está construido** el sistema, qué decisiones de diseño se tomaron y por qué. Está pensado para que cualquier desarrollador que se incorpore al proyecto pueda entenderlo sin necesidad de leer todo el código.
 
 ---
 
-## 🎯 Visión General
+## Índice
 
-El **Agente de Conocimiento** es un sistema de IA conversacional que permite a los colaboradores de Santos Pegasus consultar documentación interna. Su arquitectura separa claramente:
-
-- **Presentación** (React UI)
-- **API REST** (FastAPI)
-- **Lógica de Negocio** (Servicios)
-- **Persistencia** (BD Vectorial, JSON, PDFs)
-
-### Principios Clave
-
-✅ **Hexagonal** — Dominio puro sin dependencias externas  
-✅ **Async-First** — No bloquea en I/O  
-✅ **Stateless** — Facilita horizontal scaling  
-✅ **Type-Safe** — Pydantic + TypeScript (parcial)  
-✅ **Reproducible** — Docker + Docker Compose  
+1. [Principio de diseño](#1-principio-de-diseño)
+2. [Arquitectura hexagonal](#2-arquitectura-hexagonal)
+3. [Capas del backend](#3-capas-del-backend)
+4. [Pipeline RAG paso a paso](#4-pipeline-rag-paso-a-paso)
+5. [Capas del frontend](#5-capas-del-frontend)
+6. [Flujo de una consulta completa](#6-flujo-de-una-consulta-completa)
+7. [Persistencia de datos](#7-persistencia-de-datos)
+8. [Decisiones técnicas](#8-decisiones-técnicas)
 
 ---
 
-## 🔳 Diagrama de Capas
+## 1. Principio de diseño
+
+El sistema sigue la **Arquitectura Hexagonal** (también llamada Ports & Adapters), propuesta por Alistair Cockburn.
+
+La idea central es simple: **el núcleo del negocio no depende de nada externo**.
 
 ```
-┌────────────────────────────────────────────────────────────────────┐
-│                           PRESENTACIÓN                             │
-├────────────────────────────────────────────────────────────────────┤
-│  React 18 Components (Vite 5 + Tailwind CSS)                      │
-│  ├─ Paginas (Login, Chat, Dashboard, Admin, etc)                 │
-│  ├─ Componentes (Sidebar, RutaProtegida)                         │
-│  ├─ Contextos (AuthContexto global)                             │
-│  └─ Servicios (api.js - HTTP client)                             │
-└─────────────────────┬──────────────────────────────────────────────┘
-                      │ HTTP/REST (JSON)
-                      ↓
-┌────────────────────────────────────────────────────────────────────┐
-│                    API REST (FastAPI 0.115+)                       │
-├────────────────────────────────────────────────────────────────────┤
-│  app/api.py — Todos los endpoints                                  │
-│  ├─ POST /auth/login                    (autenticación)          │
-│  ├─ POST /agente/consultar              (RAG principal)          │
-│  ├─ GET /documentos/listar              (lista por rol)          │
-│  ├─ POST /documentos/upload             (cargar PDF)            │
-│  ├─ POST /indexar                       (reindexar)             │
-│  ├─ GET /chat/historial                 (historial chat)        │
-│  └─ [más endpoints...]                                          │
-│                                                                    │
-│  Middleware: CORS, Logging, Error handling                        │
-└─────────────────────┬──────────────────────────────────────────────┘
-                      │ Inyección de dependencias
-                      ↓
-┌────────────────────────────────────────────────────────────────────┐
-│                 LÓGICA DE NEGOCIO (Servicios)                      │
-├────────────────────────────────────────────────────────────────────┤
-│  app/services/                                                     │
-│  ├─ ServicioRag             ← Orquesta RAG (retrieval→gen)        │
-│  ├─ ServicioAgente          ← Conversación + contexto            │
-│  ├─ ServicioProcesamiento   ← Chunking de PDFs                   │
-│  ├─ ClienteIA               ← Adapter a Cohere                   │
-│  ├─ ServicioTavily          ← Búsqueda web (opcional)            │
-│  └─ Validaciones            ← Reglas de negocio                  │
-└─────────────────────┬──────────────────────────────────────────────┘
-                      │ Implementa ports.py
-                      ↓
-┌────────────────────────────────────────────────────────────────────┐
-│              DOMINIO (Lógica Pura - SIN frameworks)               │
-├────────────────────────────────────────────────────────────────────┤
-│  app/domain/                                                       │
-│  ├─ entities.py             ← FragmentoDoc, Consulta, Respuesta  │
-│  ├─ ports.py                ← Interfaces abstractas              │
-│  └─ value_objects.py        ← Tipos de valor (Confianza, etc)    │
-│                                                                    │
-│  ⚠️ CERO dependencias externas — solo lógica pura                │
-└─────────────────────┬──────────────────────────────────────────────┘
-                      │ Adaptado por infrastructure
-                      ↓
-┌────────────────────────────────────────────────────────────────────┐
-│            INFRAESTRUCTURA (Adaptadores concretos)                │
-├────────────────────────────────────────────────────────────────────┤
-│  app/infrastructure/                                               │
-│  ├─ RepositorioVectorialChroma  ← ChromaDB 0.6.3                │
-│  ├─ RepositorioDocumentosLocal  ← Lectura de PDFs (PyPDF2)     │
-│  ├─ RepositorioUsuariosJSON     ← Persistencia en JSON         │
-│  └─ ClienteIA (Cohere adapter)  ← API Cohere 5.11             │
-└─────────────────────┬──────────────────────────────────────────────┘
-                      │
-                      ↓
-┌────────────────────────────────────────────────────────────────────┐
-│                     SERVICIOS EXTERNOS                             │
-├────────────────────────────────────────────────────────────────────┤
-│  🤖 Cohere API              (embeddings + chat)                   │
-│  📊 ChromaDB                (base de datos vectorial)             │
-│  📁 ./Docs                  (archivos PDF)                        │
-│  💾 ./chroma_db             (persistencia local)                  │
-│  👥 data/usuarios.json      (usuarios + conversaciones)          │
-│  🌐 Tavily API              (búsqueda web - opcional)            │
-└────────────────────────────────────────────────────────────────────┘
+Lo que NUNCA cambia:          Lo que SÍ puede cambiar:
+┌─────────────────────┐       ┌──────────────────────────┐
+│  Reglas de negocio  │       │  Base de datos           │
+│  Entidades          │  ←──  │  Proveedor de IA         │
+│  Casos de uso       │       │  Framework web           │
+└─────────────────────┘       │  Archivos JSON / SQLite  │
+                               └──────────────────────────┘
+```
+
+Si mañana Cohere cierra y hay que migrar a OpenAI, solo se cambia el archivo `cliente_ia.py`. El resto del sistema no se toca.
+
+---
+
+## 2. Arquitectura hexagonal
+
+El backend tiene tres anillos concéntricos:
+
+```
+╔══════════════════════════════════════════════════════╗
+║                  INFRAESTRUCTURA                      ║
+║  (adaptadores concretos — pueden cambiar)            ║
+║  ┌────────────────────────────────────────────────┐  ║
+║  │              SERVICIOS / CASOS DE USO          │  ║
+║  │  (orquestan el dominio)                        │  ║
+║  │  ┌──────────────────────────────────────────┐  │  ║
+║  │  │           DOMINIO (núcleo puro)          │  │  ║
+║  │  │   entities.py · ports.py                │  │  ║
+║  │  │   Sin imports de FastAPI, Cohere, etc.  │  │  ║
+║  │  └──────────────────────────────────────────┘  │  ║
+║  └────────────────────────────────────────────────┘  ║
+╚══════════════════════════════════════════════════════╝
+```
+
+### Regla fundamental
+
+Las flechas de dependencia solo apuntan **hacia adentro**:
+- La infraestructura conoce el dominio
+- El dominio no conoce la infraestructura
+
+---
+
+## 3. Capas del backend
+
+### Capa 1 — Dominio (`BackEnd/app/domain/`)
+
+El corazón del sistema. No importa nada externo.
+
+**`entities.py`** — Las estructuras de datos del negocio:
+- `FragmentoDocumento` — Un trozo de texto extraído de un PDF con su fuente y metadatos
+- `ResultadoConsulta` — La respuesta del agente: texto, fuente, confianza, citas
+- `EstadoApiKey` — Estado de la validación de credenciales
+
+**`ports.py`** — Los contratos (interfaces abstractas):
+- `RepositorioDocumentosPort` — "Algo que sabe listar y cargar documentos"
+- `RepositorioFragmentosPort` — "Algo que sabe guardar y buscar fragmentos"
+- `ClienteLLMPort` — "Algo que sabe generar embeddings y respuestas"
+
+Nadie sabe qué hay detrás de esas interfaces. El dominio solo habla con puertos.
+
+---
+
+### Capa 2 — Servicios (`BackEnd/app/services/`)
+
+Los casos de uso: **qué hace el sistema**.
+
+**`servicio_agente.py`** — Caso de uso principal. Dos responsabilidades:
+1. `ingestar_documentos()` — Lee PDFs, los divide en fragmentos, los indexa
+2. `responder_consulta()` — Recibe una pregunta y ejecuta el pipeline RAG
+
+**`servicio_rag.py`** — El pipeline de recuperación y generación:
+1. Recupera fragmentos relevantes con búsqueda semántica
+2. Filtra por umbral de similitud (≥ 0.25)
+3. Opcionalmente busca en la web con Tavily
+4. Construye el prompt con todo el contexto
+5. Llama al LLM para generar la respuesta
+
+**`procesamiento_documentos.py`** — Extrae y trocea PDFs:
+- Limpieza de texto (elimina ruido de la extracción)
+- División en fragmentos de 400 palabras con 60 de solapamiento
+
+**`cliente_ia.py`** — Adaptador de Cohere:
+- `generar_embeddings_lote()` — 90 textos por llamada (respeta el rate limit)
+- `generar_respuesta()` — Chat con temperatura 0.2 (respuestas factuales)
+- Reintentos automáticos con backoff exponencial ante errores 429
+
+**`servicio_tavily.py`** — Búsqueda web opcional:
+- Solo se activa si la consulta es técnica
+- Solo complementa (no reemplaza) los documentos internos
+- Lista cerrada de dominios confiables
+
+---
+
+### Capa 3 — Infraestructura (`BackEnd/app/infrastructure/`)
+
+Las implementaciones concretas de los puertos.
+
+**`repositorio_documentos.py`** — Lee PDFs del disco:
+- Implementa `RepositorioDocumentosPort`
+- Soporta `.pdf`, `.txt`, `.md`
+- Extrae texto página por página con PyPDF2
+
+**`repositorio_vectorial.py`** — ChromaDB:
+- Implementa `RepositorioFragmentosPort`
+- Persiste los embeddings en disco (`chroma_db/`)
+- Búsqueda por similitud coseno (índice HNSW)
+- Deduplicación por ID — no reindexar lo que ya está
+
+**`repositorio_usuarios.py`** — Usuarios y chat en JSON:
+- Autenticación con SHA-256
+- 4 usuarios iniciales con roles
+- Historial de conversaciones por usuario
+- Sin base de datos externa — un solo archivo `data/usuarios.json`
+
+---
+
+### Capa 4 — API y orquestador
+
+**`orchestrator.py`** — El Composition Root:
+
+```python
+# Aquí se construyen TODAS las dependencias y se inyectan
+cliente_llm = ClienteIA()                    # Cohere
+repo_docs   = RepositorioDocumentosLocal()   # PDFs del disco
+repo_vec    = RepositorioVectorialChroma()   # ChromaDB
+servicio    = ServicioAgente(repo_docs, repo_vec, cliente_llm)
+```
+
+Es el único lugar donde se instancian las clases concretas. Todo lo demás trabaja con interfaces.
+
+**`api.py`** — Los endpoints REST. Recibe peticiones HTTP, llama al orquestador, devuelve JSON. No contiene lógica de negocio.
+
+**`schemas.py`** — Los contratos de la API (Pydantic). Validación automática de entrada y salida.
+
+---
+
+## 4. Pipeline RAG paso a paso
+
+RAG = Retrieval-Augmented Generation. Genera respuestas basadas en documentos reales, no en el conocimiento interno del modelo de IA.
+
+```
+Usuario: "¿Cuánto dura el onboarding?"
+         │
+         ▼
+┌─────────────────────────────────────────────────────────┐
+│  PASO 1 — Embedding de la consulta                       │
+│  Cohere convierte la pregunta en un vector de 1024 nums  │
+│  Ejemplo: [0.12, -0.34, 0.87, ...]                       │
+└────────────────────────┬────────────────────────────────┘
+                         │
+                         ▼
+┌─────────────────────────────────────────────────────────┐
+│  PASO 2 — Búsqueda semántica en ChromaDB                 │
+│  Se compara el vector de la pregunta con los vectores    │
+│  de los 103 fragmentos almacenados                       │
+│  → Retorna los 5 fragmentos más similares (coseno ≥ 0.25)│
+└────────────────────────┬────────────────────────────────┘
+                         │
+                         ▼
+┌─────────────────────────────────────────────────────────┐
+│  PASO 3 — Búsqueda web (si Tavily está habilitado)       │
+│  Solo si la consulta es técnica y hay docs relevantes    │
+│  Dominios: docs.python.org, kubernetes.io, etc.          │
+└────────────────────────┬────────────────────────────────┘
+                         │
+                         ▼
+┌─────────────────────────────────────────────────────────┐
+│  PASO 4 — Construcción del prompt                        │
+│  Sistema: "Eres el asistente de Santos Pegasus..."       │
+│  Historial: últimos 4 mensajes de la conversación        │
+│  Contexto: fragmentos internos + fuentes web             │
+│  Pregunta: "¿Cuánto dura el onboarding?"                 │
+└────────────────────────┬────────────────────────────────┘
+                         │
+                         ▼
+┌─────────────────────────────────────────────────────────┐
+│  PASO 5 — Generación con Cohere command-a-03-2025         │
+│  temperatura=0.2 (determinista, factual)                 │
+│  max_tokens=1024                                         │
+└────────────────────────┬────────────────────────────────┘
+                         │
+                         ▼
+┌─────────────────────────────────────────────────────────┐
+│  PASO 6 — Respuesta                                      │
+│  "El proceso de onboarding dura 30 días e incluye..."    │
+│  Fuente: Manual de Onboarding.pdf                        │
+│  Confianza: 0.87                                         │
+└─────────────────────────────────────────────────────────┘
+```
+
+### Cómo se procesan los documentos antes de indexar
+
+```
+PDF original (50 páginas)
+        │
+        ▼
+Extracción de texto con PyPDF2
+        │
+        ▼
+Limpieza (elimina ruido, números de página, espacios extra)
+        │
+        ▼
+Chunking: división en fragmentos de 400 palabras
+          con 60 palabras de solapamiento entre fragmentos
+          [para no cortar ideas a la mitad]
+        │
+        ▼
+~20 fragmentos por documento → ~103 en total para los 5 PDFs
+        │
+        ▼
+Cohere genera un vector 1024-dimensional para cada fragmento
+(en lotes de 90 para no superar el rate limit del plan trial)
+        │
+        ▼
+ChromaDB almacena: ID + texto + vector + metadatos (fuente, índice)
 ```
 
 ---
 
-## 🔌 Backend: Arquitectura Hexagonal
+## 5. Capas del frontend
 
-### Principio Central
-
-**El Dominio NO conoce al mundo exterior.** Solo los Adaptadores conocen el Dominio.
+El frontend también aplica separación de responsabilidades:
 
 ```
-EXTERIOR (API REST, Cohere, ChromaDB)
-    │
-    ▼
-PUERTOS (interfaces abstractas)
-    │
-    ▼
-NÚCLEO (entities, value objects, reglas)
-    │
-    ▼
-ADAPTADORES (implementan puertos)
-    │
-    ▼
-EXTERIOR (servicios reales)
+┌──────────────────────────────────────────────────────────┐
+│                      PÁGINAS                              │
+│  Login · Dashboard · Chat · Documentos · Perfil · Admin   │
+│  Cada página = un caso de uso del usuario                 │
+└──────────────────┬───────────────────────────────────────┘
+                   │ usa
+┌──────────────────▼───────────────────────────────────────┐
+│                    COMPONENTES                            │
+│  Sidebar — navegación, historial, usuario                 │
+│  RutaProtegida — layout autenticado con outlet            │
+└──────────────────┬───────────────────────────────────────┘
+                   │ usa
+┌──────────────────▼───────────────────────────────────────┐
+│                    SERVICIOS                              │
+│  servicios/api.js — todas las llamadas al backend         │
+│  Un solo lugar para cambiar la URL base                   │
+└──────────────────┬───────────────────────────────────────┘
+                   │ usa
+┌──────────────────▼───────────────────────────────────────┐
+│                    CONTEXTOS                              │
+│  AuthContexto — estado global de autenticación            │
+│  usuario · nombre · rol · esAdmin                        │
+└──────────────────────────────────────────────────────────┘
 ```
 
-### Estructura de Directorios
+### Sistema de rutas (React Router v6)
 
 ```
-BackEnd/app/
-│
-├── main.py                      ← FastAPI app + CORS + logging
-├── api.py                       ← Todos los @router (endpoints)
-├── orchestrator.py              ← Composition Root (DI)
-├── schemas.py                   ← Pydantic (validación)
-│
-├── domain/                      ← NÚCLEO (lógica pura)
-│   ├── entities.py              ← Modelos: Consulta, Respuesta
-│   └── ports.py                 ← Interfaces abstractas
-│
-├── services/                    ← LÓGICA DE NEGOCIO
-│   ├── servicio_rag.py
-│   ├── servicio_agente.py
-│   ├── cliente_ia.py
-│   ├── procesamiento_documentos.py
-│   └── servicio_tavily.py
-│
-└── infrastructure/              ← ADAPTADORES CONCRETOS
-    ├── repositorio_vectorial.py     ← ChromaDB
-    ├── repositorio_documentos.py    ← PDFs
-    └── repositorio_usuarios.py      ← JSON
+/login              → público
+/dashboard          → protegido (cualquier rol)
+/chat               → protegido (cualquier rol)
+/documentos         → protegido (cualquier rol)
+/indice             → protegido (cualquier rol)
+/perfil             → protegido (cualquier rol)
+/admin              → protegido (solo admin)
+```
+
+`RutaProtegida` envuelve todas las rutas autenticadas. Si no hay sesión, redirige a `/login`. También gestiona el estado de conversación activa que comparten el Sidebar y el Chat.
+
+---
+
+## 6. Flujo de una consulta completa
+
+De principio a fin, desde que el usuario escribe hasta que recibe la respuesta:
+
+```
+1. Usuario escribe en el Chat y presiona Enter
+
+2. Chat.jsx llama a api.consultar(pregunta, convId, username)
+
+3. api.js hace POST /api/agente/consultar con el body JSON
+
+4. Vite proxy redirige la llamada a http://localhost:8000
+
+5. FastAPI recibe la request en api.py → endpoint consultar()
+
+6. Llama a Orquestador.servicio.responder_consulta(pregunta, historial)
+
+7. ServicioAgente → ServicioRag.recuperar(pregunta)
+   └─ RepositorioVectorialChroma.buscar()
+      └─ ClienteIA.generar_embedding_consulta()  [Cohere API]
+      └─ ChromaDB.query()  [búsqueda coseno local]
+
+8. ServicioRag.generar(pregunta, fragmentos, historial)
+   └─ ServicioTavily.buscar()  [Tavily API, si habilitado]
+   └─ ClienteIA.generar_respuesta(prompt)  [Cohere API]
+
+9. api.py persiste los mensajes en RepositorioUsuarios
+
+10. FastAPI devuelve JSON con respuesta, fuente, confianza, citas
+
+11. Chat.jsx actualiza el estado → React renderiza la burbuja
+
+12. El mensaje aparece en pantalla con badge de confianza y citas
 ```
 
 ---
 
-## 🎨 Frontend: Componentes React
+## 7. Persistencia de datos
 
-### Estructura
+El sistema usa dos mecanismos de persistencia, sin base de datos relacional:
 
-```
-FrontEnd/src/
-│
-├── paginas/                     ← PAGES (mapean rutas)
-│   ├── Login.jsx
-│   ├── Dashboard.jsx
-│   ├── Chat.jsx                 ← Main feature (RAG)
-│   ├── Documentos.jsx
-│   ├── Admin.jsx
-│   └── [otros...]
-│
-├── componentes/                 ← COMPONENTS reutilizables
-│   ├── Sidebar.jsx              ← Menu lateral colapsable
-│   └── RutaProtegida.jsx        ← Wrapper autenticación
-│
-├── contextos/                   ← STATE MANAGEMENT
-│   └── AuthContexto.jsx         ← Token + usuario global
-│
-├── servicios/                   ← API CLIENT
-│   └── api.js                   ← fetch wrapper
-│
-└── styles.css                   ← Global + Tailwind
-```
+### ChromaDB (vectores)
+- Directorio: `chroma_db/` en la raíz del proyecto
+- Contiene los embeddings de los 103 fragmentos
+- Persiste entre reinicios del servidor
+- Si se borra, el sistema reindexará automáticamente al arrancar
 
----
+### JSON local (usuarios e historial)
+- Archivo: `BackEnd/data/usuarios.json`
+- Contiene usuarios, contraseñas (SHA-256) e historial completo de chat
+- Estructura:
 
-## 🔄 Pipeline RAG Detallado
-
-### Fase 1: Retrieval (Búsqueda)
-
-```
-INPUT: pregunta = "¿Cómo configuro el ambiente?"
-
-1. EMBEDDING DE LA PREGUNTA
-   ├─ Model: Cohere embed-multilingual-v3.0
-   ├─ input_type: "search_query"
-   └─ Output: vector[1024 dimensiones]
-
-2. BÚSQUEDA EN CHROMADB
-   ├─ Métrica: similitud coseno (HNSW)
-   ├─ Top N: 5 fragmentos
-   ├─ Threshold: similitud ≥ 0.25
-   └─ Output: fragmentos_relevantes[]
-
-3. FILTRADO
-   ├─ Descartar similitud < 0.25
-   └─ Si 0 fragmentos → respuesta fallback
-```
-
-### Fase 2: Augmentation (Enriquecimiento)
-
-```
-1. RECUPERAR HISTORIAL
-   └─ Últimos 4 mensajes de la conversación
-
-2. CONSTRUIR PROMPT
-   ├─ System role: "Eres asistente de Santos Pegasus"
-   ├─ Historial: últimos 4 mensajes
-   ├─ Contexto: 5 fragmentos del retrieval
-   ├─ Búsqueda web: Tavily (opcional)
-   └─ Pregunta actual: "¿Cómo configuro...?"
-```
-
-### Fase 3: Generation (Generación)
-
-```
-LLM: Cohere command-a-03-2025
-
-Parámetros:
-├─ temperature: 0.2  (respuestas factuales)
-├─ max_tokens: 1024  (respuestas moderadas)
-└─ modelo: command-a-03-2025
-
-Output: respuesta + confianza + citas
-```
-
----
-
-## 📊 Flujos de Datos
-
-### Flujo 1: Chat (RAG Principal)
-
-```
-Frontend: POST /api/agente/consultar
-  {
-    "pregunta": "¿Cómo configuro?",
-    "id_conversacion": "conv-123",
-    "username": "usuario"
+```json
+{
+  "usuarios": {
+    "admin": { "nombre": "...", "rol": "admin", "activo": true, ... }
+  },
+  "historial": {
+    "backend": [
+      {
+        "id": "conv-20260101120000",
+        "titulo": "¿Cómo funciona el onboarding?",
+        "mensajes": [
+          { "rol": "usuario", "texto": "...", "timestamp": "..." },
+          { "rol": "agente",  "texto": "...", "metadatos": { "confianza": 0.87 } }
+        ]
+      }
+    ]
   }
-           │
-           ▼
-Backend: api.py → orchestrator.py → ServicioRag
-           │
-           ├─ Verificar usuario
-           ├─ Cargar historial
-           ├─ Embedding → ChromaDB (retrieval)
-           ├─ Construir prompt
-           ├─ Llamar Cohere (generation)
-           ├─ Guardar en historial
-           └─ Return respuesta + metadata
-           │
-           ▼
-Frontend: {
-  "respuesta": "Para configurar...",
-  "confianza": 0.85,
-  "citas": ["setup-guide.pdf"]
 }
 ```
 
-### Flujo 2: Login
-
-```
-Frontend: POST /api/auth/login
-  { "username": "usuario", "contraseña": "pass" }
-           │
-           ▼
-Backend: Verificar en usuarios.json
-           │
-           ├─ Usuario no existe → 401
-           ├─ Contraseña incorrecta → 401
-           └─ OK → generar token JWT
-           │
-           ▼
-Frontend: Guardar token en localStorage
-          Redirect a /chat
-```
-
 ---
 
-**Última actualización**: 13 de Julio, 2026
+## 8. Decisiones técnicas
+
+### ¿Por qué Cohere y no OpenAI?
+
+Cohere ofrece un plan trial gratuito con embeddings multilingües. El modelo `embed-multilingual-v3.0` funciona bien en español sin configuración adicional.
+
+### ¿Por qué ChromaDB y no Pinecone o Weaviate?
+
+ChromaDB es local y no requiere cuenta ni API key externa. Persiste en disco y es suficiente para la escala de este proyecto (103 fragmentos).
+
+### ¿Por qué JSON y no SQLite o PostgreSQL?
+
+Para mantener el sistema sin dependencias externas de base de datos. Un único archivo JSON es fácil de inspeccionar, respaldar y entender. Para producción a gran escala se reemplazaría por una BD real sin cambiar el dominio (solo el adaptador).
+
+### ¿Por qué arquitectura hexagonal?
+
+Permite cambiar cualquier tecnología externa (IA, BD, framework) sin tocar la lógica de negocio. También hace las pruebas mucho más simples — los mocks reemplazan los adaptadores sin afectar el dominio.
+
+### ¿Por qué batch embeddings?
+
+El plan trial de Cohere tiene límite de 100 llamadas/minuto. Enviar 103 fragmentos de a 1 = 103 llamadas. Enviarlos en lotes de 90 = 2 llamadas. Esto hace la indexación 50× más rápida y evita errores 429.

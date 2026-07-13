@@ -1,253 +1,229 @@
-# 🚀 Guía Rápida de Ejecución
+# Inicio Rápido — Santos Pegasus Knowledge Agent
 
-## ⚡ 5 minutos para tener el sistema funcionando
-
-### Prerrequisitos
-
-✅ Python 3.12  
-✅ Node.js 18+  
-✅ Clave Cohere (gratis en [dashboard.cohere.ai](https://dashboard.cohere.ai))
+Esta guía te lleva de cero a tener el sistema funcionando en menos de 10 minutos. Si quieres entender el diseño del sistema, lee [ARQUITECTURA.md](ARQUITECTURA.md).
 
 ---
 
-## Opción 1: Ejecución Local (Recomendado)
+## Antes de empezar
 
-### Paso 1: Configurar Backend
+Necesitas tener instalado:
 
-```bash
-# Activar entorno virtual
+| Requisito | Versión | Cómo verificar |
+|-----------|---------|----------------|
+| Python | **3.12** (no 3.13 ni 3.14) | `py -0` |
+| Node.js | 20 o superior | `node --version` |
+| Clave de Cohere | — | [dashboard.cohere.com/api-keys](https://dashboard.cohere.com/api-keys) |
+
+> **¿Por qué Python 3.12?** ChromaDB (la base de datos vectorial) no tiene soporte para Python 3.14 todavía. Con 3.12 todo funciona.
+
+---
+
+## Paso 1 — Crear el entorno virtual
+
+Abre una terminal en la raíz del proyecto y ejecuta:
+
+```cmd
+py -3.12 -m venv .venv
 .venv\Scripts\activate
-
-# Instalar dependencias
-pip install -r BackEnd/requirements.txt
-
-# Configurar .env (raíz del proyecto)
-# Agregar tu COHERE_API_KEY
 ```
 
-### Paso 2: Iniciar Backend (Terminal 1)
+Si lo hiciste bien, verás `(.venv)` al inicio del prompt. Eso significa que el entorno está activo.
 
-```bash
+> Siempre que abras una terminal nueva, debes volver a ejecutar `.venv\Scripts\activate` antes de iniciar el backend.
+
+---
+
+## Paso 2 — Instalar dependencias del backend
+
+```cmd
+pip install -r BackEnd\requirements.txt
+```
+
+Esto instala FastAPI, Cohere, ChromaDB, PyPDF2 y el resto de librerías. Puede tardar 1-2 minutos la primera vez.
+
+---
+
+## Paso 3 — Configurar la clave de Cohere
+
+Abre el archivo `.env` en la raíz del proyecto y reemplaza la clave:
+
+```env
+COHERE_API_KEY=tu-clave-real-aqui
+```
+
+Para obtener una clave gratuita:
+1. Ve a [dashboard.cohere.com/api-keys](https://dashboard.cohere.com/api-keys)
+2. Inicia sesión o crea una cuenta
+3. Copia la clave de prueba (Trial key)
+
+> El plan gratuito tiene un límite de 100 llamadas por minuto. El sistema lo maneja automáticamente.
+
+---
+
+## Paso 4 — Iniciar el backend
+
+```cmd
 cd BackEnd
-uvicorn app.main:app --reload --port 8000
+py -3.12 -m uvicorn app.main:app --reload --port 8000
 ```
 
-**Espera a ver este mensaje:**
+**La primera vez tarda 1-3 minutos** porque el sistema lee los 5 PDFs, los divide en fragmentos y genera los embeddings con Cohere. Verás algo así:
+
 ```
+INFO | Orquestador iniciando...
+INFO | Coleccion vacia — iniciando ingesta automatica...
+INFO | Generando embeddings para 103 fragmentos nuevos...
+INFO | Ingesta completada: 103 fragmentos.
 INFO | Uvicorn running on http://127.0.0.1:8000
 ```
 
-📍 Documentación API: http://localhost:8000/docs
+**Las siguientes veces arranca en segundos** porque ChromaDB ya tiene los datos guardados en disco.
 
-### Paso 3: Iniciar Frontend (Terminal 2)
+Para verificar que el backend está funcionando, abre esto en tu navegador:
+```
+http://localhost:8000/api/salud
+```
+Debe responder: `{"estado":"ok","mensaje":"Agente de Conocimiento Santos Pegasus Soluciones operativo","version":"1.0.0"}`
 
-```bash
+---
+
+## Paso 5 — Instalar dependencias del frontend
+
+Abre una **nueva terminal** (no cierres la del backend) y ejecuta:
+
+```cmd
 cd FrontEnd
 npm install
+```
+
+Solo necesitas hacer esto una vez.
+
+---
+
+## Paso 6 — Iniciar el frontend
+
+```cmd
 npm run dev
 ```
 
-**Espera a ver:**
+Verás:
 ```
-VITE v5.4.10  ready in 123 ms
-
-➜  Local:   http://localhost:5173/
-```
-
-📍 UI disponible: http://localhost:5173
-
-### Paso 4: Inicia sesión
-
-Usa cualquier usuario:
-- `test` / `test`
-- `admin` / `admin`
-
----
-
-## Opción 2: Docker Compose (Un comando)
-
-```bash
-docker-compose up --build
-```
-
-Espera 2-3 minutos. Luego:
-
-📍 Frontend: http://localhost  
-📍 Backend: http://localhost:8000  
-📍 Docs: http://localhost:8000/docs
-
-Para detener:
-```bash
-docker-compose down
+  VITE v5.x.x  ready in 500ms
+  ➜  Local:   http://localhost:5173/
 ```
 
 ---
 
-## 🧪 Ejecutar Tests
+## Paso 7 — Abrir el sistema
 
-```bash
-cd QA
-pip install -r ../BackEnd/requirements.txt
-pytest tests/ -v
+Abre tu navegador en:
+```
+http://localhost:5173
 ```
 
-Resultado esperado: **63 tests pasando** ✅
+Inicia sesión con cualquiera de estos usuarios:
+
+| Usuario | Contraseña | Tipo de acceso |
+|---------|-----------|----------------|
+| `admin` | `Admin2024!` | Administrador completo |
+| `backend` | `Backend2024!` | Documentación de backend |
+| `frontend` | `Frontend2024!` | Documentación de frontend |
+| `fullstack` | `Fullstack2024!` | Acceso técnico completo |
 
 ---
 
-## 🐛 Troubleshooting Rápido
+## ¿Qué puedo hacer ahora?
 
-### ❌ Error: "COHERE_API_KEY not set"
+Una vez dentro del sistema:
 
-**Solución:**
-1. Editar `.env` en la raíz
-2. Agregar `COHERE_API_KEY=tu_clave_real`
-3. Reiniciar backend
+**Chat IA** — Haz preguntas sobre los documentos internos:
+- *"¿Cuánto dura el proceso de onboarding?"*
+- *"¿Cuáles son los estándares de código backend?"*
+- *"¿Cómo se gestiona un incidente de producción?"*
 
-```bash
-cat .env  # Verificar que esté la clave
-```
+**Documentos** — Ver qué archivos están indexados y disponibles según tu rol.
 
-### ❌ Error: "Port 8000 already in use"
+**Índice vectorial** — Si agregaste nuevos PDFs a la carpeta `Docs/`, puedes reindexarlos aquí sin reiniciar el servidor.
 
-```bash
-# Cambiar puerto
+**Perfil** — Cambiar tu nombre, email o contraseña.
+
+**Administración** (solo admin) — Ver estadísticas de uso, gestionar usuarios y subir nuevos documentos.
+
+---
+
+## Solución de problemas
+
+### Error: `ModuleNotFoundError: No module named 'app'`
+
+Estás ejecutando uvicorn desde el directorio equivocado. Asegúrate de estar dentro de `BackEnd/`:
+```cmd
 cd BackEnd
-uvicorn app.main:app --port 9000 --reload
+py -3.12 -m uvicorn app.main:app --reload --port 8000
 ```
 
-### ❌ Frontend no conecta a backend
+### Error: `ModuleNotFoundError: No module named 'chromadb'`
 
-Verificar `.env.local` en FrontEnd:
+El entorno virtual no tiene las dependencias instaladas. Verifica que `(.venv)` aparece en el prompt y ejecuta:
+```cmd
+pip install -r BackEnd\requirements.txt
 ```
-VITE_API_URL=http://localhost:8000
+
+### El backend usa Python 3.14 en lugar de 3.12
+
+Verifica que usas `py -3.12` explícitamente:
+```cmd
+py -3.12 -m uvicorn app.main:app --reload --port 8000
 ```
 
-Si cambiaste puerto, actualizar acá también.
+### Error 429 durante la indexación
 
-### ❌ ChromaDB error
+La clave de Cohere del plan trial tiene límite de 100 llamadas/minuto. El sistema espera automáticamente y reintenta. Solo necesitas esperar — la indexación terminará sola.
 
-```bash
-# Limpiar BD vieja
-rm -r ./chroma_db
+### El frontend no puede conectarse al backend
 
-# Reiniciar backend (recreará DB)
+Verifica que el backend está corriendo en el puerto 8000:
 ```
+http://localhost:8000/api/salud
+```
+Si no responde, el backend se cayó — revisa la terminal del backend para ver el error.
 
 ---
 
-## 📊 URLs Principales
+## Ejecución con Docker (alternativa)
 
-| Servicio | URL | Descripción |
-|---|---|---|
-| **Frontend** | http://localhost:5173 | UI React |
-| **Backend** | http://localhost:8000 | API REST |
-| **Swagger Docs** | http://localhost:8000/docs | Documentación interactiva |
-| **ReDoc** | http://localhost:8000/redoc | Referencia API |
+Si tienes Docker instalado, puedes levantar todo con un solo comando:
 
----
-
-## 🎯 Primer Chat
-
-1. Inicia sesión (test/test)
-2. Ve a **Chat**
-3. Escribe: "¿Qué es Santos Pegasus?"
-4. El agente responde usando documentación interna
-
----
-
-## 📝 Comandos Útiles
-
-### Backend
-
-```bash
-# Desarrollar (con auto-reload)
-cd BackEnd
-uvicorn app.main:app --reload
-
-# Producción
-uvicorn app.main:app --workers 4
-
-# Logs
-tail -f .logs/app.log
+```cmd
+docker compose up --build
 ```
 
-### Frontend
+Accede en `http://localhost:80`. Para detener: `docker compose down`.
 
-```bash
-# Desarrollo (con HMR)
-cd FrontEnd
-npm run dev
+---
 
-# Build para producción
-npm run build
+## Agregar documentos nuevos
 
-# Preview del build
-npm run preview
+1. Copia el PDF a la carpeta `Docs/`
+2. En el frontend, ve a **Índice vectorial**
+3. Haz clic en **Indexar nuevos documentos**
+
+El sistema agrega solo los fragmentos nuevos sin reindexar lo que ya existe.
+
+Para reindexar todo desde cero (si cambiaste la configuración de chunking):
+- Haz clic en **Reindexación completa** en la misma pantalla
+
+---
+
+## Activar la búsqueda web con Tavily (opcional)
+
+Por defecto está desactivada. Si quieres que el agente complemente sus respuestas con información técnica de la web:
+
+1. Obtén una clave gratuita en [app.tavily.com](https://app.tavily.com)
+2. En `.env`:
+```env
+TAVILY_API_KEY=tu-clave-tavily
+TAVILY_HABILITADO=true
 ```
+3. Reinicia el backend
 
-### Docker
-
-```bash
-# Build images
-docker-compose build
-
-# Logs
-docker-compose logs -f
-
-# Shell en contenedor
-docker exec -it agente_backend bash
-```
-
----
-
-## 🔗 Próximos Pasos
-
-1. **Lee la documentación**
-   - [README.md](README.md) - Detalles completos
-   - [ARQUITECTURA.md](ARQUITECTURA.md) - Diseño del sistema
-
-2. **Explora los documentos**
-   - Ve a **Admin** → **Índice Vectorial**
-   - Ve los 5 documentos indexados
-
-3. **Prueba funcionalidades**
-   - Chat: Haz preguntas
-   - Documentos: Descarga PDFs
-   - Admin: Ve estadísticas
-
-4. **Desarrollo**
-   - Agrupa nuevos PDFs en `Docs/`
-   - Crea endpoints en `BackEnd/app/api.py`
-   - Agrega componentes en `FrontEnd/src/`
-
----
-
-## 🆘 Necesitas Ayuda?
-
-1. Verificar logs:
-   ```bash
-   # Backend
-   cd BackEnd && tail -f .logs/app.log
-   
-   # Frontend (ver console del navegador: F12)
-   ```
-
-2. Validar configuración:
-   ```bash
-   # Ver .env
-   cat .env
-   
-   # Ver .env.local (frontend)
-   cat FrontEnd/.env.local
-   ```
-
-3. Verificar API:
-   ```bash
-   curl http://localhost:8000/api/salud
-   # Debe retornar: {"salud": "ok"}
-   ```
-
----
-
-**Última actualización**: 13 de Julio, 2026
+El sistema solo consulta la web cuando la pregunta es técnica y hay documentos internos relevantes. La web siempre complementa, nunca reemplaza los documentos internos.
