@@ -1,0 +1,24 @@
+# API y servidor
+fastapi==0.115.0
+uvicorn[standard]==0.32.0
+pydantic==2.13.4
+python-dotenv==1.0.0
+httpx==0.28.1
+
+# LLM — Cohere (embeddings + chat)
+cohere==5.11.4
+
+# Búsqueda web
+tavily-python==0.5.0
+
+python-multipart==0.0.18
+
+# Base de datos vectorial
+chromadb==0.6.3
+
+# Procesamiento de documentos
+PyPDF2==3.0.1
+
+# Pruebas
+pytest==8.3.4
+pytest-asyncio==0.24.0

@@ -1,0 +1,104 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..400&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Variables ───────────────────────────────────────────── */
+:root {
+  --fondo:    #060a12;
+  --sidebar:  #080d19;
+  --card:     #0a0f1c;
+  --card2:    #0d1525;
+  --borde:    #1e2a3d;
+  --borde2:   #243050;
+  --acento:   #f97316;
+  --texto:    #e8edf5;
+  --muted:    #6b82a0;
+  --dim:      #4a6080;
+}
+
+/* ── Reset / Base ────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body, #root {
+  height: 100%;
+  font-family: 'Inter', system-ui, sans-serif;
+  background: var(--fondo);
+  color: var(--texto);
+  font-size: 14px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Scrollbar ───────────────────────────────────────────── */
+::-webkit-scrollbar        { width: 4px; height: 4px; }
+::-webkit-scrollbar-track  { background: transparent; }
+::-webkit-scrollbar-thumb  { background: var(--borde); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--borde2); }
+
+/* ── Animaciones ─────────────────────────────────────────── */
+@keyframes fadeUp  { from { opacity:0; transform:translateY(8px) } to { opacity:1; transform:translateY(0) } }
+@keyframes pulso   { 0%,100%{opacity:1} 50%{opacity:0.25} }
+@keyframes rotar   { to { transform:rotate(360deg) } }
+
+.animar-entrada { animation: fadeUp 0.22s ease-out; }
+.pulso          { animation: pulso  1.4s ease-in-out infinite; }
+.girando        { animation: rotar  0.7s linear infinite; }
+
+/* ── Nav item ────────────────────────────────────────────── */
+.nav-item {
+  @apply flex items-center gap-3 px-3 py-2.5 rounded-xl w-full
+         font-medium transition-all duration-150 cursor-pointer select-none;
+  font-size: 13px;
+  color: var(--muted);
+}
+.nav-item:hover { background: rgba(255,255,255,0.04); color: #fff; }
+.nav-item.activo {
+  background: rgba(249,115,22,0.1);
+  color: #f97316;
+  border: 1px solid rgba(249,115,22,0.2);
+}
+
+/* ── Burbujas de chat ────────────────────────────────────── */
+.burbuja-usuario {
+  @apply rounded-2xl rounded-br-sm px-4 py-3 text-sm leading-relaxed;
+  background: linear-gradient(135deg, #f97316, #ea6c0a);
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(249,115,22,0.2);
+}
+.burbuja-agente {
+  @apply rounded-2xl rounded-bl-sm px-4 py-3 text-sm leading-relaxed;
+  background: var(--card);
+  border: 1px solid var(--borde);
+  color: #d0dcea;
+}
+
+/* ── Input de chat ───────────────────────────────────────── */
+.chat-input {
+  @apply w-full rounded-2xl px-5 py-3.5 text-sm text-white resize-none
+         focus:outline-none transition-all duration-200;
+  background: var(--card);
+  border: 1px solid var(--borde);
+  color: var(--texto);
+}
+.chat-input::placeholder { color: var(--dim); }
+.chat-input:focus {
+  border-color: rgba(249,115,22,0.45);
+  box-shadow: 0 0 0 3px rgba(249,115,22,0.07);
+}
+
+/* ── Botón primario ──────────────────────────────────────── */
+.btn-primario {
+  @apply inline-flex items-center justify-center gap-2 rounded-xl
+         text-sm font-semibold text-white
+         disabled:opacity-40 disabled:cursor-not-allowed
+         transition-all duration-150 active:scale-[0.97];
+  background: #f97316;
+}
+.btn-primario:hover:not(:disabled) { background: #ea6c0a; box-shadow: 0 4px 14px rgba(249,115,22,0.25); }
+
+/* ── Badges de confianza ─────────────────────────────────── */
+.badge-alta  { @apply rounded-full border px-2.5 py-0.5 text-xs font-semibold bg-emerald-500/10 text-emerald-400 border-emerald-500/25; }
+.badge-media { @apply rounded-full border px-2.5 py-0.5 text-xs font-semibold bg-amber-500/10  text-amber-400  border-amber-500/25;  }
+.badge-baja  { @apply rounded-full border px-2.5 py-0.5 text-xs font-semibold bg-red-500/10    text-red-400    border-red-500/25;    }

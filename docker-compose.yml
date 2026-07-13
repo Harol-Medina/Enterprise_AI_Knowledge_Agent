@@ -1,0 +1,61 @@
+version: "3.9"
+
+services:
+  # ---------------------------------------------------------------
+  # Backend — FastAPI + ChromaDB + OpenAI
+  # ---------------------------------------------------------------
+  backend:
+    build:
+      context: ./BackEnd
+      dockerfile: Dockerfile
+    container_name: santos_pegasus_backend
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    volumes:
+      # Persistencia de ChromaDB entre reinicios del contenedor
+      - chroma_data:/app/chroma_db
+      # Documentos PDF leídos desde el host
+      - ./Docs:/app/../Docs:ro
+    environment:
+      - PYTHONUNBUFFERED=1
+      - LOG_NIVEL=INFO
+      # Las siguientes variables se leen del archivo .env en la raíz
+      - COHERE_API_KEY=${COHERE_API_KEY}
+      - COHERE_MODELO_CHAT=${COHERE_MODELO_CHAT:-command-a-03-2025}
+      - COHERE_MODELO_EMBEDDING=${COHERE_MODELO_EMBEDDING:-embed-multilingual-v3.0}
+      - TAVILY_API_KEY=${TAVILY_API_KEY}
+      - TAVILY_HABILITADO=${TAVILY_HABILITADO:-false}
+      - CHROMA_DIRECTORIO_PERSISTENCIA=/app/chroma_db
+      - CHROMA_COLECCION=${CHROMA_COLECCION:-santos_pegasus_conocimiento}
+      - DOCUMENTOS_DIRECTORIO=/app/../Docs
+      - CHUNK_TAMANO=${CHUNK_TAMANO:-400}
+      - CHUNK_SOLAPAMIENTO=${CHUNK_SOLAPAMIENTO:-60}
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/salud"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
+
+  # ---------------------------------------------------------------
+  # Frontend — React + Vite → build estático servido por Nginx
+  # ---------------------------------------------------------------
+  frontend:
+    build:
+      context: ./FrontEnd
+      dockerfile: Dockerfile
+    container_name: santos_pegasus_frontend
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+
+# ---------------------------------------------------------------
+# Volúmenes nombrados
+# ---------------------------------------------------------------
+volumes:
+  chroma_data:
+    driver: local

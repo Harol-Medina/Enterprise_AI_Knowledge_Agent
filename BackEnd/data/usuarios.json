@@ -1,0 +1,897 @@
+{
+  "usuarios": {
+    "admin": {
+      "nombre": "Administrador",
+      "apellido": "General",
+      "email": "admin@santospegasus.com",
+      "rol": "admin",
+      "contrasena_hash": "5a55c7873ed7338f35d782adb513d336a36086ddec0fa4b6444fda6d440387c2",
+      "activo": true,
+      "creado_en": "2024-01-01T00:00:00"
+    },
+    "backend": {
+      "nombre": "Carlos",
+      "apellido": "Ramirez",
+      "email": "backend@santospegasus.com",
+      "rol": "backend",
+      "contrasena_hash": "e52680571975bcfa718e14ec6a751097924143cb59816b2f9a8d0a48495acd5b",
+      "activo": true,
+      "creado_en": "2024-01-15T00:00:00"
+    },
+    "frontend": {
+      "nombre": "Maria",
+      "apellido": "Gonzalez",
+      "email": "frontend@santospegasus.com",
+      "rol": "frontend",
+      "contrasena_hash": "7645ef78936e9eca8cdd88f295d591c4f8aadbe9f5986faa1b2eb917a7868da0",
+      "activo": true,
+      "creado_en": "2024-01-20T00:00:00"
+    },
+    "fullstack": {
+      "nombre": "Ana",
+      "apellido": "Martinez",
+      "email": "fullstack@santospegasus.com",
+      "rol": "fullstack",
+      "contrasena_hash": "e37f5be67bc6acdc39feda57eec903c80979f5de6cf81dde953542fee0aab6a1",
+      "activo": true,
+      "creado_en": "2024-02-01T00:00:00"
+    }
+  },
+  "historial": {
+    "carlos.dev": [
+      {
+        "id": "conv-20260713090603832950",
+        "titulo": "¿Cuál es el onboarding?",
+        "mensajes": [
+          {
+            "rol": "usuario",
+            "texto": "¿Cuál es el onboarding?",
+            "timestamp": "2026-07-13T09:06:03.845367",
+            "metadatos": {}
+          },
+          {
+            "rol": "agente",
+            "texto": "Respuesta de prueba generada por el doble de Cohere.",
+            "timestamp": "2026-07-13T09:06:03.853772",
+            "metadatos": {
+              "confianza": 0.82,
+              "citas": [
+                "Manual de Onboarding para Nuevos Desarrolladores.pdf",
+                "Guía Oficial de Ingeniería Back-end.pdf"
+              ]
+            }
+          }
+        ],
+        "creado_en": "2026-07-13T09:06:03.832980",
+        "actualizado_en": "2026-07-13T09:06:03.853785"
+      },
+      {
+        "id": "conv-20260713090724364776",
+        "titulo": "¿Cuál es el onboarding?",
+        "mensajes": [
+          {
+            "rol": "usuario",
+            "texto": "¿Cuál es el onboarding?",
+            "timestamp": "2026-07-13T09:07:24.380414",
+            "metadatos": {}
+          },
+          {
+            "rol": "agente",
+            "texto": "Respuesta de prueba generada por el doble de Cohere.",
+            "timestamp": "2026-07-13T09:07:24.393271",
+            "metadatos": {
+              "confianza": 0.82,
+              "citas": [
+                "Manual de Onboarding para Nuevos Desarrolladores.pdf",
+                "Guía Oficial de Ingeniería Back-end.pdf"
+              ]
+            }
+          }
+        ],
+        "creado_en": "2026-07-13T09:07:24.364800",
+        "actualizado_en": "2026-07-13T09:07:24.393286"
+      },
+      {
+        "id": "conv-20260713090749141064",
+        "titulo": "¿Cuál es el onboarding?",
+        "mensajes": [
+          {
+            "rol": "usuario",
+            "texto": "¿Cuál es el onboarding?",
+            "timestamp": "2026-07-13T09:07:49.154137",
+            "metadatos": {}
+          },
+          {
+            "rol": "agente",
+            "texto": "Respuesta de prueba generada por el doble de Cohere.",
+            "timestamp": "2026-07-13T09:07:49.165208",
+            "metadatos": {
+              "confianza": 0.82,
+              "citas": [
+                "Manual de Onboarding para Nuevos Desarrolladores.pdf",
+                "Guía Oficial de Ingeniería Back-end.pdf"
+              ]
+            }
+          }
+        ],
+        "creado_en": "2026-07-13T09:07:49.141100",
+        "actualizado_en": "2026-07-13T09:07:49.165218"
+      },
+      {
+        "id": "conv-20260713090828610189",
+        "titulo": "¿Cuál es el onboarding?",
+        "mensajes": [
+          {
+            "rol": "usuario",
+            "texto": "¿Cuál es el onboarding?",
+            "timestamp": "2026-07-13T09:08:28.624012",
+            "metadatos": {}
+          },
+          {
+            "rol": "agente",
+            "texto": "Respuesta de prueba generada por el doble de Cohere.",
+            "timestamp": "2026-07-13T09:08:28.638064",
+            "metadatos": {
+              "confianza": 0.82,
+              "citas": [
+                "Manual de Onboarding para Nuevos Desarrolladores.pdf",
+                "Guía Oficial de Ingeniería Back-end.pdf"
+              ]
+            }
+          }
+        ],
+        "creado_en": "2026-07-13T09:08:28.610223",
+        "actualizado_en": "2026-07-13T09:08:28.638075"
+      },
+      {
+        "id": "conv-20260713091523592801",
+        "titulo": "hola",
+        "mensajes": [
+          {
+            "rol": "usuario",
+            "texto": "hola",
+            "timestamp": "2026-07-13T09:16:35.002776",
+            "metadatos": {}
+          },
+          {
+            "rol": "agente",
+            "texto": "¡Hola! ¿En qué puedo ayudarte hoy? Estoy aquí para responder a tus preguntas basadas en los documentos internos de Santos Pegasus Soluciones. Si tienes alguna duda sobre protocolos, guías de ingeniería, o cualquier otro tema relacionado con la empresa, no dudes en preguntar.",
+            "timestamp": "2026-07-13T09:16:35.013964",
+            "metadatos": {
+              "confianza": 0.352,
+              "citas": [
+                "PROTOCOLO DE RESPUESTA A INCIDENTES Y POST-MORTEMS.pdf",
+                "Manual de Onboarding para Nuevos Desarrolladores.pdf",
+                "Santo Pegasus Soluciones Guía Oficial de Ingeniería FrontEnd.pdf",
+                "Santo Pegasus Soluciones Guía Oficial de Ingeniería Backend.pdf"
+              ]
+            }
+          },
+          {
+            "rol": "usuario",
+            "texto": "dime que doducmentos puedo consultar",
+            "timestamp": "2026-07-13T09:18:02.344762",
+            "metadatos": {}
+          },
+          {
+            "rol": "agente",
+            "texto": "Puedes consultar los siguientes documentos internos de Santos Pegasus Soluciones, según el contexto proporcionado:\n\n1. **Manual de Onboarding para Nuevos Desarrolladores.pdf**  \n   (Información sobre procesos de incorporación, solicitudes de presupuesto para cursos, gestión de Pull Requests, creación de ADRs, y prácticas de logging.)\n\n2. **Arquitectura de Microservicios y Mapa de Dominios.pdf**  \n   (Detalles técnicos de los microservicios como `medical-records-service`, `user-service`, `ai-assistant-service`, incluyendo tecnologías, APIs expuestas, modelos de datos y dependencias.)\n\n3. **PROTOCOLO DE RESPUESTA A INCIDENTES Y POST-MORTEMS.pdf**  \n   (Procedimientos para detección de incidentes, fuentes de alerta, y roles en el proceso de respuesta.)\n\nSi necesitas información específica de alguno de estos documentos o sobre un tema en particular, ¡avísame!",
+            "timestamp": "2026-07-13T09:18:02.358348",
+            "metadatos": {
+              "confianza": 0.448,
+              "citas": [
+                "Manual de Onboarding para Nuevos Desarrolladores.pdf",
+                "Arquitectura de Microservicios y Mapa de Dominios.pdf",
+                "PROTOCOLO DE RESPUESTA A INCIDENTES Y POST-MORTEMS.pdf"
+              ]
+            }
+          },
+          {
+            "rol": "usuario",
+            "texto": "estas seguro que solo puedo constular estos 3 y no los 5 y dim epque no",
+            "timestamp": "2026-07-13T09:18:38.471815",
+            "metadatos": {}
+          },
+          {
+            "rol": "agente",
+            "texto": "Según el contexto proporcionado, los documentos internos disponibles para consulta son los siguientes:\n\n1. **Santo Pegasus Soluciones Guía Oficial de Ingeniería FrontEnd.pdf**\n2. **Santo Pegasus Soluciones Guía Oficial de Ingeniería Backend.pdf**\n\nEstos son los documentos que he utilizado como fuente principal para responder a tus preguntas. No se mencionan otros tres documentos adicionales en el contexto proporcionado.\n\nEs posible que haya habido una confusión, ya que en el historial de la conversación se mencionan fragmentos de cinco documentos diferentes. Sin embargo, en el contexto actual, solo se han proporcionado dos documentos completos: la **Guía Oficial de Ingeniería FrontEnd** y la **Guía Oficial de Ingeniería Backend**.\n\nSi necesitas consultar otros documentos, por favor, proporciona más información o detalles sobre ellos, y haré todo lo posible para ayudarte.\n\n**Fuente:** Contexto proporcionado.",
+            "timestamp": "2026-07-13T09:18:38.485875",
+            "metadatos": {
+              "confianza": 0.433,
+              "citas": [
+                "Santo Pegasus Soluciones Guía Oficial de Ingeniería FrontEnd.pdf",
+                "Santo Pegasus Soluciones Guía Oficial de Ingeniería Backend.pdf"
+              ]
+            }
+          },
+          {
+            "rol": "usuario",
+            "texto": "y lo de aruqcteryra de microservcios porque no o protocolo de respuesta tampoco",
+            "timestamp": "2026-07-13T09:19:22.556632",
+            "metadatos": {}
+          },
+          {
+            "rol": "agente",
+            "texto": "Entiendo que estás preguntando por qué no se mencionan la arquitectura de microservicios ni el protocolo de respuesta a incidentes en los documentos proporcionados.\n\nSegún los documentos internos disponibles, la **arquitectura de microservicios** está detallada en el documento **\"Arquitectura de Microservicios y Mapa de Dominios.pdf\"**. Este documento describe las motivaciones detrás de la adopción de microservicios, los principios arquitectónicos que guían las decisiones, el ecosistema tecnológico utilizado, y otros aspectos relevantes.\n\nPor otro lado, el **protocolo de respuesta a incidentes** está cubierto en el documento **\"PROTOCOLO DE RESPUESTA A INCIDENTES Y POST-MORTEMS.pdf\"**, que explica cómo se detectan, comunican y gestionan los incidentes, incluyendo los canales de comunicación, políticas de on-call y el proceso paso a paso de respuesta.\n\nAmbos temas están cubiertos en los documentos internos proporcionados. Si no encuentras la información específica que buscas, por favor, aclara tu pregunta o indica qué aspecto en particular te interesa, y estaré encantado de ayudarte con más detalles.",
+            "timestamp": "2026-07-13T09:19:22.567335",
+            "metadatos": {
+              "confianza": 0.517,
+              "citas": [
+                "Arquitectura de Microservicios y Mapa de Dominios.pdf",
+                "PROTOCOLO DE RESPUESTA A INCIDENTES Y POST-MORTEMS.pdf",
+                "Santo Pegasus Soluciones Guía Oficial de Ingeniería Backend.pdf"
+              ]
+            }
+          }
+        ],
+        "creado_en": "2026-07-13T09:15:23.592829",
+        "actualizado_en": "2026-07-13T09:19:22.567342"
+      },
+      {
+        "id": "conv-20260713091625824880",
+        "titulo": "Nueva conversación",
+        "mensajes": [],
+        "creado_en": "2026-07-13T09:16:25.824906",
+        "actualizado_en": "2026-07-13T09:16:25.824913"
+      },
+      {
+        "id": "conv-20260713093821109323",
+        "titulo": "¿Cuál es el onboarding?",
+        "mensajes": [
+          {
+            "rol": "usuario",
+            "texto": "¿Cuál es el onboarding?",
+            "timestamp": "2026-07-13T09:38:21.125254",
+            "metadatos": {}
+          },
+          {
+            "rol": "agente",
+            "texto": "Respuesta de prueba generada por el doble de Cohere.",
+            "timestamp": "2026-07-13T09:38:21.140551",
+            "metadatos": {
+              "confianza": 0.82,
+              "citas": [
+                "Manual de Onboarding para Nuevos Desarrolladores.pdf",
+                "Guía Oficial de Ingeniería Back-end.pdf"
+              ]
+            }
+          }
+        ],
+        "creado_en": "2026-07-13T09:38:21.109346",
+        "actualizado_en": "2026-07-13T09:38:21.140566"
+      },
+      {
+        "id": "conv-20260713093945480519",
+        "titulo": "dime que pokemon es el numero 1 de la pokdex",
+        "mensajes": [
+          {
+            "rol": "usuario",
+            "texto": "dime que pokemon es el numero 1 de la pokdex",
+            "timestamp": "2026-07-13T09:39:46.466974",
+            "metadatos": {}
+          },
+          {
+            "rol": "agente",
+            "texto": "Esa consulta está fuera de mi ámbito. Soy el asistente de conocimiento interno de Santos Pegasus Soluciones y puedo ayudarte con temas de tecnología, ingeniería de software, microservicios, onboarding, protocolos internos y arquitectura. Si necesitas ayuda con documentos internos, te puedo orientar sobre los temas que sí manejo. ¿En qué puedo ayudarte?",
+            "timestamp": "2026-07-13T09:39:46.480221",
+            "metadatos": {
+              "confianza": 0.0,
+              "citas": []
+            }
+          }
+        ],
+        "creado_en": "2026-07-13T09:39:45.480542",
+        "actualizado_en": "2026-07-13T09:39:46.480230"
+      },
+      {
+        "id": "conv-20260713094257078814",
+        "titulo": "Nueva conversación",
+        "mensajes": [],
+        "creado_en": "2026-07-13T09:42:57.078845",
+        "actualizado_en": "2026-07-13T09:42:57.078852"
+      },
+      {
+        "id": "conv-20260713094258693913",
+        "titulo": "Nueva conversación",
+        "mensajes": [],
+        "creado_en": "2026-07-13T09:42:58.693938",
+        "actualizado_en": "2026-07-13T09:42:58.693942"
+      },
+      {
+        "id": "conv-20260713094259273723",
+        "titulo": "dime cual es un pokemon de fuego",
+        "mensajes": [
+          {
+            "rol": "usuario",
+            "texto": "dime cual es un pokemon de fuego",
+            "timestamp": "2026-07-13T09:43:17.884811",
+            "metadatos": {}
+          },
+          {
+            "rol": "agente",
+            "texto": "Esa consulta está fuera de mi ámbito. Soy el asistente de conocimiento interno de Santos Pegasus Soluciones y puedo ayudarte con temas de tecnología, ingeniería de software, microservicios, onboarding, protocolos internos y arquitectura. Si necesitas ayuda con documentos internos, te puedo orientar sobre los temas que sí manejo. ¿En qué puedo ayudarte?",
+            "timestamp": "2026-07-13T09:43:17.905362",
+            "metadatos": {
+              "confianza": 0.0,
+              "citas": []
+            }
+          }
+        ],
+        "creado_en": "2026-07-13T09:42:59.273749",
+        "actualizado_en": "2026-07-13T09:43:17.905379"
+      },
+      {
+        "id": "conv-20260713094428196758",
+        "titulo": "Nueva conversación",
+        "mensajes": [],
+        "creado_en": "2026-07-13T09:44:28.196786",
+        "actualizado_en": "2026-07-13T09:44:28.196790"
+      },
+      {
+        "id": "conv-20260713094429126125",
+        "titulo": "Nueva conversación",
+        "mensajes": [],
+        "creado_en": "2026-07-13T09:44:29.126147",
+        "actualizado_en": "2026-07-13T09:44:29.126151"
+      },
+      {
+        "id": "conv-20260713094741608593",
+        "titulo": "¿Cuál es el onboarding?",
+        "mensajes": [
+          {
+            "rol": "usuario",
+            "texto": "¿Cuál es el onboarding?",
+            "timestamp": "2026-07-13T09:47:41.628072",
+            "metadatos": {}
+          },
+          {
+            "rol": "agente",
+            "texto": "Respuesta de prueba generada por el doble de Cohere.",
+            "timestamp": "2026-07-13T09:47:41.641331",
+            "metadatos": {
+              "confianza": 0.82,
+              "citas": [
+                "Manual de Onboarding para Nuevos Desarrolladores.pdf",
+                "Guía Oficial de Ingeniería Back-end.pdf"
+              ]
+            }
+          }
+        ],
+        "creado_en": "2026-07-13T09:47:41.608619",
+        "actualizado_en": "2026-07-13T09:47:41.641342"
+      },
+      {
+        "id": "conv-20260713114050103583",
+        "titulo": "Nueva conversación",
+        "mensajes": [],
+        "creado_en": "2026-07-13T11:40:50.103625",
+        "actualizado_en": "2026-07-13T11:40:50.103631"
+      },
+      {
+        "id": "conv-20260713114050990560",
+        "titulo": "Nueva conversación",
+        "mensajes": [],
+        "creado_en": "2026-07-13T11:40:50.990588",
+        "actualizado_en": "2026-07-13T11:40:50.990593"
+      },
+      {
+        "id": "conv-20260713114051648428",
+        "titulo": "Nueva conversación",
+        "mensajes": [],
+        "creado_en": "2026-07-13T11:40:51.648466",
+        "actualizado_en": "2026-07-13T11:40:51.648473"
+      },
+      {
+        "id": "conv-20260713114052971655",
+        "titulo": "Nueva conversación",
+        "mensajes": [],
+        "creado_en": "2026-07-13T11:40:52.971674",
+        "actualizado_en": "2026-07-13T11:40:52.971677"
+      },
+      {
+        "id": "conv-20260713114054009357",
+        "titulo": "Nueva conversación",
+        "mensajes": [],
+        "creado_en": "2026-07-13T11:40:54.009387",
+        "actualizado_en": "2026-07-13T11:40:54.009392"
+      },
+      {
+        "id": "conv-20260713114054585787",
+        "titulo": "Nueva conversación",
+        "mensajes": [],
+        "creado_en": "2026-07-13T11:40:54.585819",
+        "actualizado_en": "2026-07-13T11:40:54.585827"
+      },
+      {
+        "id": "conv-20260713114055792474",
+        "titulo": "Nueva conversación",
+        "mensajes": [],
+        "creado_en": "2026-07-13T11:40:55.792498",
+        "actualizado_en": "2026-07-13T11:40:55.792502"
+      },
+      {
+        "id": "conv-20260713114056471988",
+        "titulo": "Nueva conversación",
+        "mensajes": [],
+        "creado_en": "2026-07-13T11:40:56.472020",
+        "actualizado_en": "2026-07-13T11:40:56.472025"
+      },
+      {
+        "id": "conv-20260713114056986111",
+        "titulo": "¿Cuál es el proceso de onboarding para nuevos desa...",
+        "mensajes": [
+          {
+            "rol": "usuario",
+            "texto": "¿Cuál es el proceso de onboarding para nuevos desarrolladores?",
+            "timestamp": "2026-07-13T11:42:24.039401",
+            "metadatos": {}
+          },
+          {
+            "rol": "agente",
+            "texto": "El proceso de onboarding para nuevos desarrolladores en **Santos Pegasus Soluciones** está detallado en el **Manual de Onboarding para Nuevos Desarrolladores** (Documento [1], [2], [3], [4], [5]). A continuación, te resumo los pasos clave:\n\n### **1. Bienvenida y Cultura de la Empresa**  \n- Mensaje de bienvenida y presentación de la misión de la empresa: *\"Construir soluciones de software que transformen negocios reales, con código que perdure, equipos que crezcan y tecnología que respete a las personas\"* (Documento [1], Página 1).  \n- Asignación de un **buddy** (desarrollador Senior o Pleno) para acompañar los primeros 30 días (Documento [1], Página 2).  \n\n### **2. Accesos y Cuentas (Día 1)**  \n- Configuración de cuentas esenciales:  \n  - Correo corporativo (@santopegasus.com).  \n  - Slack (canales obligatorios).  \n  - GitHub (organización privada).  \n  - Jira (squad asignado).  \n  - Confluence.  \n  - VPN corporativa.  \n  - 1Password y 2FA en herramientas clave (Documento [3], Sección 12.1).  \n\n### **3. Configuración del Entorno Local**  \n- **Back-end**:  \n  - Instalación de SDKMAN, Java 17, IntelliJ IDEA, Docker Desktop.  \n  - Clonar repositorio, configurar `.env`, ejecutar `docker compose up -d` y verificar la aplicación en `localhost:8080` (Documento [3], Sección 12.2).  \n- **Front-end**:  \n  - Instalación de NVM, Node.js 20, VS Code.  \n  - Clonar repositorio front-end, configurar `.env`, ejecutar `npm install` y `npm run dev` (Documento [3], Sección 12.3).  \n\n### **4. Flujo de Trabajo y Git**  \n- Configuración de SSH Key en GitHub.  \n- Familiarización con el flujo de trabajo: ramas protegidas (`develop`, `main`), Pull Requests y Code Reviews (Documento [3], Sección 12.4).  \n\n### **5. Primeras Tareas (Plan 30/60/90 Días)**  \n- **Primeros 30 días**:  \n  - Completar el onboarding, resolver tickets `good-first-issue`, participar en Code Reviews como observador (Documento [2], Sección 7.1).  \n- **30–60 días**:  \n  - Entregar features pequeñas, escribir pruebas unitarias, aprender a usar Swagger (Documento [2], Sección 7.1).  \n- **60–90 días**:  \n  - Contribuir en refinements, proponer mejoras y tomar ownership de features completas (Documento [2], Sección 7.1).  \n\n### **6. Herramientas y Sistemas Internos**  \n- Familiarización con herramientas como AWS Console, Datadog, SonarQube y Confluence (Documento [3], Sección 12.1).  \n\n### **7. Seguridad y Mejores Prácticas**  \n- Aplicar el principio de privilegio mínimo en microservicios (Documento [3], Página 9).  \n- Reportar incidentes de seguridad siguiendo el protocolo (Documento [5], Sección 13.4).  \n\n### **8. Checklist de Onboarding (Semana 1)**  \n- Completar el checklist junto al Tech Lead y guardarlo en Confluence (Documento [3], Sección 12).  \n\n### **9. Preguntas Frecuentes**  \n- Respuestas a dudas comunes, como el tiempo esperado para ser productivo (3 meses) y la importancia de hacer preguntas (Documento [5], Sección 14).  \n\nEste proceso está diseñado para que los nuevos desarrolladores se integren de manera progresiva y efectiva, con el apoyo de su buddy y el equipo. Si necesitas más detalles, consulta el **Manual de Onboarding para Nuevos Desarrolladores** en Confluence.",
+            "timestamp": "2026-07-13T11:42:24.054305",
+            "metadatos": {
+              "confianza": 0.634,
+              "citas": [
+                "Manual de Onboarding para Nuevos Desarrolladores.pdf"
+              ]
+            }
+          }
+        ],
+        "creado_en": "2026-07-13T11:40:56.986132",
+        "actualizado_en": "2026-07-13T11:42:24.054313"
+      },
+      {
+        "id": "conv-20260713121755789952",
+        "titulo": "¿Cuál es el onboarding?",
+        "mensajes": [
+          {
+            "rol": "usuario",
+            "texto": "¿Cuál es el onboarding?",
+            "timestamp": "2026-07-13T12:17:55.814134",
+            "metadatos": {}
+          },
+          {
+            "rol": "agente",
+            "texto": "Respuesta de prueba generada por el doble de Cohere.",
+            "timestamp": "2026-07-13T12:17:55.829848",
+            "metadatos": {
+              "confianza": 0.82,
+              "citas": [
+                "Manual de Onboarding para Nuevos Desarrolladores.pdf",
+                "Guía Oficial de Ingeniería Back-end.pdf"
+              ]
+            }
+          }
+        ],
+        "creado_en": "2026-07-13T12:17:55.790951",
+        "actualizado_en": "2026-07-13T12:17:55.829848"
+      },
+      {
+        "id": "conv-20260713121956232006",
+        "titulo": "¿Cuál es el onboarding?",
+        "mensajes": [
+          {
+            "rol": "usuario",
+            "texto": "¿Cuál es el onboarding?",
+            "timestamp": "2026-07-13T12:19:56.250080",
+            "metadatos": {}
+          },
+          {
+            "rol": "agente",
+            "texto": "Respuesta de prueba generada por el doble de Cohere.",
+            "timestamp": "2026-07-13T12:19:56.264035",
+            "metadatos": {
+              "confianza": 0.82,
+              "citas": [
+                "Manual de Onboarding para Nuevos Desarrolladores.pdf",
+                "Guía Oficial de Ingeniería Back-end.pdf"
+              ]
+            }
+          }
+        ],
+        "creado_en": "2026-07-13T12:19:56.232006",
+        "actualizado_en": "2026-07-13T12:19:56.264035"
+      },
+      {
+        "id": "conv-20260713122124087903",
+        "titulo": "¿Cuál es el onboarding?",
+        "mensajes": [
+          {
+            "rol": "usuario",
+            "texto": "¿Cuál es el onboarding?",
+            "timestamp": "2026-07-13T12:21:24.108491",
+            "metadatos": {}
+          },
+          {
+            "rol": "agente",
+            "texto": "Respuesta de prueba generada por el doble de Cohere.",
+            "timestamp": "2026-07-13T12:21:24.121670",
+            "metadatos": {
+              "confianza": 0.82,
+              "citas": [
+                "Manual de Onboarding para Nuevos Desarrolladores.pdf",
+                "Guía Oficial de Ingeniería Back-end.pdf"
+              ]
+            }
+          }
+        ],
+        "creado_en": "2026-07-13T12:21:24.087903",
+        "actualizado_en": "2026-07-13T12:21:24.121670"
+      },
+      {
+        "id": "conv-20260713122152861755",
+        "titulo": "¿Cuál es el onboarding?",
+        "mensajes": [
+          {
+            "rol": "usuario",
+            "texto": "¿Cuál es el onboarding?",
+            "timestamp": "2026-07-13T12:21:52.877288",
+            "metadatos": {}
+          },
+          {
+            "rol": "agente",
+            "texto": "Respuesta de prueba generada por el doble de Cohere.",
+            "timestamp": "2026-07-13T12:21:52.887922",
+            "metadatos": {
+              "confianza": 0.82,
+              "citas": [
+                "Manual de Onboarding para Nuevos Desarrolladores.pdf",
+                "Guía Oficial de Ingeniería Back-end.pdf"
+              ]
+            }
+          }
+        ],
+        "creado_en": "2026-07-13T12:21:52.861755",
+        "actualizado_en": "2026-07-13T12:21:52.887922"
+      },
+      {
+        "id": "conv-20260713122219508779",
+        "titulo": "¿Cuál es el onboarding?",
+        "mensajes": [
+          {
+            "rol": "usuario",
+            "texto": "¿Cuál es el onboarding?",
+            "timestamp": "2026-07-13T12:22:19.525815",
+            "metadatos": {}
+          },
+          {
+            "rol": "agente",
+            "texto": "Respuesta de prueba generada por el doble de Cohere.",
+            "timestamp": "2026-07-13T12:22:19.541728",
+            "metadatos": {
+              "confianza": 0.82,
+              "citas": [
+                "Manual de Onboarding para Nuevos Desarrolladores.pdf",
+                "Guía Oficial de Ingeniería Back-end.pdf"
+              ]
+            }
+          }
+        ],
+        "creado_en": "2026-07-13T12:22:19.508779",
+        "actualizado_en": "2026-07-13T12:22:19.541728"
+      },
+      {
+        "id": "conv-20260713122725673269",
+        "titulo": "¿Cuál es el onboarding?",
+        "mensajes": [
+          {
+            "rol": "usuario",
+            "texto": "¿Cuál es el onboarding?",
+            "timestamp": "2026-07-13T12:27:25.693313",
+            "metadatos": {}
+          },
+          {
+            "rol": "agente",
+            "texto": "Respuesta de prueba generada por el doble de Cohere.",
+            "timestamp": "2026-07-13T12:27:25.710248",
+            "metadatos": {
+              "confianza": 0.82,
+              "citas": [
+                "Manual de Onboarding para Nuevos Desarrolladores.pdf",
+                "Guía Oficial de Ingeniería Back-end.pdf"
+              ]
+            }
+          }
+        ],
+        "creado_en": "2026-07-13T12:27:25.673269",
+        "actualizado_en": "2026-07-13T12:27:25.710248"
+      },
+      {
+        "id": "conv-20260713152627387052",
+        "titulo": "¿Cuánto dura el onboarding?",
+        "mensajes": [
+          {
+            "rol": "usuario",
+            "texto": "¿Cuánto dura el onboarding?",
+            "timestamp": "2026-07-13T15:26:27.402765",
+            "metadatos": {}
+          },
+          {
+            "rol": "agente",
+            "texto": "Respuesta de prueba generada por el doble de Cohere.",
+            "timestamp": "2026-07-13T15:26:27.412774",
+            "metadatos": {
+              "confianza": 0.82,
+              "citas": [
+                "Manual de Onboarding para Nuevos Desarrolladores.pdf",
+                "Santo Pegasus Soluciones Guía Oficial de Ingeniería Backend.pdf"
+              ]
+            }
+          }
+        ],
+        "creado_en": "2026-07-13T15:26:27.387052",
+        "actualizado_en": "2026-07-13T15:26:27.412774"
+      },
+      {
+        "id": "conv-20260713152627475726",
+        "titulo": "Test",
+        "mensajes": [],
+        "creado_en": "2026-07-13T15:26:27.476774",
+        "actualizado_en": "2026-07-13T15:26:27.476774"
+      }
+    ],
+    "admin.santos": [
+      {
+        "id": "conv-20260713092641151619",
+        "titulo": "sabes que pokemon es el numero 1 de la pokedes",
+        "mensajes": [
+          {
+            "rol": "usuario",
+            "texto": "sabes que pokemon es el numero 1 de la pokedes",
+            "timestamp": "2026-07-13T09:26:41.734313",
+            "metadatos": {}
+          },
+          {
+            "rol": "agente",
+            "texto": "Esa consulta está fuera de mi ámbito. Soy el asistente de conocimiento interno de Santos Pegasus Soluciones y puedo ayudarte con temas de tecnología, ingeniería de software, microservicios, onboarding, protocolos internos y arquitectura. Si necesitas ayuda con documentos internos, te puedo orientar sobre los temas que sí manejo. ¿En qué puedo ayudarte?",
+            "timestamp": "2026-07-13T09:26:41.747584",
+            "metadatos": {
+              "confianza": 0.0,
+              "citas": []
+            }
+          }
+        ],
+        "creado_en": "2026-07-13T09:26:41.151659",
+        "actualizado_en": "2026-07-13T09:26:41.747595"
+      }
+    ],
+    "backend": [
+      {
+        "id": "conv-20260713123521447694",
+        "titulo": "hola",
+        "mensajes": [
+          {
+            "rol": "usuario",
+            "texto": "hola",
+            "timestamp": "2026-07-13T12:35:24.710177",
+            "metadatos": {}
+          },
+          {
+            "rol": "agente",
+            "texto": "¡Hola! ¿En qué puedo ayudarte hoy? Estoy aquí para responder a tus preguntas basadas en los documentos internos de Santos Pegasus Soluciones. Si tienes alguna duda sobre protocolos, procedimientos, o cualquier otro tema relacionado con la empresa, no dudes en preguntar.\n\nRecuerda que mi fuente principal son los documentos internos, pero también puedo complementar con fuentes web técnicas confiables si es necesario. ¿Hay algo específico que necesites saber?",
+            "timestamp": "2026-07-13T12:35:24.722891",
+            "metadatos": {
+              "confianza": 0.352,
+              "citas": [
+                "PROTOCOLO DE RESPUESTA A INCIDENTES Y POST-MORTEMS.pdf",
+                "Manual de Onboarding para Nuevos Desarrolladores.pdf",
+                "Santo Pegasus Soluciones Guía Oficial de Ingeniería FrontEnd.pdf",
+                "Santo Pegasus Soluciones Guía Oficial de Ingeniería Backend.pdf"
+              ]
+            }
+          }
+        ],
+        "creado_en": "2026-07-13T12:35:21.447777",
+        "actualizado_en": "2026-07-13T12:35:24.722900"
+      },
+      {
+        "id": "conv-20260713123530075644",
+        "titulo": "como estas",
+        "mensajes": [
+          {
+            "rol": "usuario",
+            "texto": "como estas",
+            "timestamp": "2026-07-13T12:35:35.976639",
+            "metadatos": {}
+          },
+          {
+            "rol": "agente",
+            "texto": "¡Hola! Estoy bien, gracias por preguntar. ¿En qué puedo ayudarte hoy? ¿Tienes alguna pregunta relacionada con los documentos internos de Santos Pegasus Soluciones o necesitas información técnica específica? Estoy aquí para asistirte con cualquier consulta que tengas.",
+            "timestamp": "2026-07-13T12:35:35.992856",
+            "metadatos": {
+              "confianza": 0.432,
+              "citas": [
+                "Santo Pegasus Soluciones Guía Oficial de Ingeniería FrontEnd.pdf",
+                "Santo Pegasus Soluciones Guía Oficial de Ingeniería Backend.pdf",
+                "PROTOCOLO DE RESPUESTA A INCIDENTES Y POST-MORTEMS.pdf"
+              ]
+            }
+          }
+        ],
+        "creado_en": "2026-07-13T12:35:30.075672",
+        "actualizado_en": "2026-07-13T12:35:35.992870"
+      }
+    ],
+    "maria.dev": [
+      {
+        "id": "conv-20260713152627507322",
+        "titulo": "Mi consulta",
+        "mensajes": [],
+        "creado_en": "2026-07-13T15:26:27.507322",
+        "actualizado_en": "2026-07-13T15:26:27.507322"
+      }
+    ],
+    "admin": [
+      {
+        "id": "conv-20260713160303100331",
+        "titulo": "hola",
+        "mensajes": [
+          {
+            "rol": "usuario",
+            "texto": "hola",
+            "timestamp": "2026-07-13T16:03:08.913615",
+            "metadatos": {}
+          },
+          {
+            "rol": "agente",
+            "texto": "¡Hola! ¿En qué puedo ayudarte hoy? Estoy aquí para responder a tus preguntas basadas en los documentos internos de Santos Pegasus Soluciones. Si tienes alguna duda sobre protocolos, procedimientos, o cualquier otro tema relacionado con la empresa, no dudes en preguntar.\n\nRecuerda que mi fuente principal son los documentos internos, pero también puedo complementar con información de fuentes web técnicas confiables si es necesario. ¿Hay algo específico sobre lo que necesites información?",
+            "timestamp": "2026-07-13T16:03:08.924901",
+            "metadatos": {
+              "confianza": 0.352,
+              "citas": [
+                "PROTOCOLO DE RESPUESTA A INCIDENTES Y POST-MORTEMS.pdf",
+                "Manual de Onboarding para Nuevos Desarrolladores.pdf",
+                "Santo Pegasus Soluciones Guía Oficial de Ingeniería FrontEnd.pdf",
+                "Santo Pegasus Soluciones Guía Oficial de Ingeniería Backend.pdf"
+              ]
+            }
+          }
+        ],
+        "creado_en": "2026-07-13T16:03:03.100361",
+        "actualizado_en": "2026-07-13T16:03:08.924911"
+      },
+      {
+        "id": "conv-20260713160430922238",
+        "titulo": "¿Cuál es el proceso de onboarding para nuevos desa...",
+        "mensajes": [
+          {
+            "rol": "usuario",
+            "texto": "¿Cuál es el proceso de onboarding para nuevos desarrolladores?",
+            "timestamp": "2026-07-13T16:04:44.936227",
+            "metadatos": {}
+          },
+          {
+            "rol": "agente",
+            "texto": "El proceso de onboarding para nuevos desarrolladores en **Santos Pegasus Soluciones** está detallado en el **Manual de Onboarding para Nuevos Desarrolladores** (Documento [1], [2], [3], [4], [5]). A continuación, se resume el proceso clave:\n\n1. **Bienvenida y Cultura de la Empresa**  \n   - Mensaje de bienvenida y presentación de la misión de la empresa (Documento [1], Página 1-2).  \n   - Énfasis en la combinación de excelencia técnica y enfoque humano.  \n\n2. **Estructura del Equipo**  \n   - Explicación de la estructura del equipo y roles clave (Documento [1], Sección 2).  \n\n3. **Día 1: Accesos y Cuentas**  \n   - Configuración de accesos esenciales como correo corporativo, Slack, GitHub, Jira, Confluence, VPN, 1Password, y herramientas como AWS Console, Datadog, y SonarQube (Documento [3], Sección 12.1).  \n\n4. **Configuración del Entorno Local**  \n   - **Back-end**: Instalación de SDKMAN, Java 17, IntelliJ IDEA, Docker, clonación del repositorio, configuración de `.env`, y verificación de la aplicación en `localhost:8080` (Documento [3], Sección 12.2).  \n   - **Front-end**: Instalación de NVM, Node.js 20, VS Code, clonación del repositorio front-end, configuración de `.env`, y verificación de la aplicación en `localhost:5173` (Documento [3], Sección 12.3).  \n\n5. **Guía de Git y Flujo de Trabajo**  \n   - Configuración de SSH Key en GitHub y entendimiento del flujo de trabajo con Pull Requests (Documento [3], Sección 12.4).  \n\n6. **Primeras Tareas Sugeridas (Plan 30/60/90 Días)**  \n   - **Junior**: Resolver tickets `good-first-issue`, participar en Code Reviews como observador, y entregar features pequeñas (Documento [2], Sección 7.1).  \n   - **Pleno**: Tomar ownership de features de mediana complejidad, realizar Code Reviews, y proponer mejoras de arquitectura (Documento [2], Sección 7.2).  \n   - **Senior**: Entender la arquitectura global, revisar la Guía de Ingeniería, y contribuir con reviews de alta calidad (Documento [2], Sección 7.3).  \n\n7. **Herramientas y Sistemas Internos**  \n   - Familiarización con herramientas como Jira, Confluence, y Swagger (Documento [1], Sección 8).  \n\n8. **Proceso de Code Review**  \n   - Participación en Code Reviews según el nivel de seniority (Documento [1], Sección 9).  \n\n9. **Beneficios y Políticas de RRHH**  \n   - Revisión de beneficios y políticas disponibles (Documento [1], Sección 10).  \n\n10. **Seguridad desde el Primer Día**  \n    - Aplicación del principio de privilegio mínimo y procedimientos en caso de incidentes de seguridad (Documento [3], Sección 11).  \n\n11. **Checklist de Onboarding (Semana 1)**  \n    - Completar el checklist junto con el Tech Lead y guardarlo en Confluence (Documento [3], Sección 12).  \n\n12. **Contactos Útiles y Preguntas Frecuentes**  \n    - Lista de contactos para emergencias y respuestas a preguntas comunes (Documento [5], Sección 13 y 14).  \n\nEl proceso está diseñado para que los nuevos desarrolladores estén listos para contribuir con código real al finalizar la primera semana, con un enfoque progresivo en los primeros 30, 60 y 90 días. Además, se asigna un **buddy** (desarrollador Senior o Pleno) para acompañar durante los primeros 30 días (Documento [1], Página 2).  \n\n**Fuente principal**: *Manual de Onboarding para Nuevos Desarrolladores.pdf* (Documentos [1], [2], [3], [4], [5]).",
+            "timestamp": "2026-07-13T16:04:44.949774",
+            "metadatos": {
+              "confianza": 0.634,
+              "citas": [
+                "Manual de Onboarding para Nuevos Desarrolladores.pdf"
+              ]
+            }
+          }
+        ],
+        "creado_en": "2026-07-13T16:04:30.922254",
+        "actualizado_en": "2026-07-13T16:04:44.949781"
+      },
+      {
+        "id": "conv-20260713160444812936",
+        "titulo": "¿Cómo se gestiona un incidente de producción críti...",
+        "mensajes": [
+          {
+            "rol": "usuario",
+            "texto": "¿Cómo se gestiona un incidente de producción crítico?",
+            "timestamp": "2026-07-13T16:04:58.933888",
+            "metadatos": {}
+          },
+          {
+            "rol": "agente",
+            "texto": "Según el **PROTOCOLO DE RESPUESTA A INCIDENTES Y POST-MORTEMS.pdf**, un incidente de producción crítico (SEV-1) se gestiona de la siguiente manera:\n\n1. **Detección (Fase 1)**:  \n   - El ingeniero on-call o un sistema automatizado detecta la alerta a través de herramientas como **PagerDuty** o **Datadog**.  \n   - Se verifica la legitimidad de la alerta, se consultan logs, se identifica el microservicio afectado y se verifica el estado del servicio en **AWS ECS**.  \n\n2. **Declaración del Incidente (Fase 2)**:  \n   - El ingeniero on-call publica un mensaje inicial en el canal `#incidents` de Slack.  \n   - El **Incident Commander (IC)** de turno es notificado y asume el comando.  \n   - El IC declara formalmente el incidente, define su severidad (SEV-1 en este caso) y crea un canal de **War Room** específico (por ejemplo, `#sev1-war-room`).  \n   - El IC asigna los roles clave: **Communications Lead**, **Technical Lead** y **Subject Matter Experts (SMEs)**.  \n\n3. **War Room y Diagnóstico (Fase 3)**:  \n   - El **Technical Lead** lidera la investigación técnica, formula hipótesis y coordina a los SMEs.  \n   - Se revisan deploys recientes, cambios de configuración y se analizan métricas y logs.  \n   - Se proponen y ejecutan acciones de mitigación o rollback, sujetas a la aprobación del IC.  \n\n4. **Comunicación y Resolución**:  \n   - El **Communications Lead** envía actualizaciones internas y externas según los SLAs (cada 30 minutos para SEV-1).  \n   - Una vez que el sistema cumple con los **criterios técnicos de resolución** (disponibilidad ≥ 99.9%, latencia P99 < 500ms, etc.), el Technical Lead lo confirma al IC.  \n   - El IC valida las métricas, declara el cierre formal y el Communications Lead comunica la resolución.  \n\n5. **Post-Mortem**:  \n   - El IC abre un ticket de Post-Mortem para analizar la causa raíz y definir acciones correctivas.  \n   - El Post-Mortem debe ser **blameless**, **honesto** y **accionable**.  \n\n**Fuente**: [1] [2] [3] [4] [5] **PROTOCOLO DE RESPUESTA A INCIDENTES Y POST-MORTEMS.pdf** (Páginas 6, 11, 22, 23).",
+            "timestamp": "2026-07-13T16:04:58.948359",
+            "metadatos": {
+              "confianza": 0.619,
+              "citas": [
+                "PROTOCOLO DE RESPUESTA A INCIDENTES Y POST-MORTEMS.pdf"
+              ]
+            }
+          }
+        ],
+        "creado_en": "2026-07-13T16:04:44.812954",
+        "actualizado_en": "2026-07-13T16:04:58.948370"
+      },
+      {
+        "id": "conv-20260713160501828156",
+        "titulo": "¿Cuáles son los estándares de ingeniería back-end ...",
+        "mensajes": [
+          {
+            "rol": "usuario",
+            "texto": "¿Cuáles son los estándares de ingeniería back-end de Santos Pegasus?",
+            "timestamp": "2026-07-13T16:05:14.759088",
+            "metadatos": {}
+          },
+          {
+            "rol": "agente",
+            "texto": "Los estándares de ingeniería back-end de Santos Pegasus Soluciones se basan en los principios SOLID y otras mejores prácticas de ingeniería de software, según lo establecido en la **Guía Oficial de Ingeniería Back-end** (Documento [1]). A continuación, se detallan los aspectos clave:\n\n1. **Principios SOLID**:  \n   - **Single Responsibility Principle (SRP)**: Cada clase debe tener una única responsabilidad. Por ejemplo, la lógica de persistencia debe estar en los *Repositories*, no en los *Controllers*.  \n   - **Open/Closed Principle (OCP)**: Las entidades deben estar abiertas para extensión pero cerradas para modificación. Se prioriza el uso de interfaces y abstracciones.  \n   - **Liskov Substitution Principle (LSP)**: Las clases derivadas deben poder sustituir a las clases base sin afectar la integridad del sistema.  \n\n2. **Validación de Entradas**:  \n   - Nunca confiar en los datos del cliente.  \n   - Uso obligatorio de **Bean Validation (JSR 380)** con anotaciones como `@NotNull`, `@Size`, `@Email`, etc.  \n   - Sanitización de cadenas de texto para prevenir XSS.  \n   - Validación estricta de tipos y formatos (IDs, fechas, valores monetarios).  \n\n3. **Observabilidad**:  \n   - Uso de **SLF4J/Logback** para logs estructurados.  \n   - Exposición de métricas con **Spring Boot Actuator** y **Micrometer**, exportadas a Prometheus.  \n   - Implementación de **rastreo distribuido** (Trace ID y Span ID) para depuración en sistemas distribuidos.  \n   - Endpoints de *Health Checks* para monitorear dependencias críticas.  \n\n4. **Gestión de Base de Datos y Migrations**:  \n   Aunque no se detalla completamente en los fragmentos disponibles, se menciona la importancia de manejar migraciones de manera estructurada.  \n\n5. **Confiabilidad y SRE**:  \n   - **Cultura sin culpa** (*Blameless Culture*) en la respuesta a incidentes.  \n   - Automatización de tareas repetitivas para reducir riesgos operacionales.  \n   - Equilibrio entre confiabilidad y velocidad de entrega mediante el uso de *Error Budget*.  \n\nEstos estándares aseguran que el código sea escalable, sostenible, legible y seguro, alineándose con la filosofía de ingeniería de Santos Pegasus. Para más detalles, consulta la **Guía Oficial de Ingeniería Back-end** (Documento [1]).",
+            "timestamp": "2026-07-13T16:05:14.772192",
+            "metadatos": {
+              "confianza": 0.707,
+              "citas": [
+                "Santo Pegasus Soluciones Guía Oficial de Ingeniería Backend.pdf",
+                "Santo Pegasus Soluciones Guía Oficial de Ingeniería FrontEnd.pdf",
+                "Manual de Onboarding para Nuevos Desarrolladores.pdf",
+                "PROTOCOLO DE RESPUESTA A INCIDENTES Y POST-MORTEMS.pdf"
+              ]
+            }
+          }
+        ],
+        "creado_en": "2026-07-13T16:05:01.828181",
+        "actualizado_en": "2026-07-13T16:05:14.772200"
+      },
+      {
+        "id": "conv-20260713160900900053",
+        "titulo": "¿Qué microservicios componen la arquitectura de la...",
+        "mensajes": [
+          {
+            "rol": "usuario",
+            "texto": "¿Qué microservicios componen la arquitectura de la empresa?",
+            "timestamp": "2026-07-13T16:09:10.624060",
+            "metadatos": {}
+          },
+          {
+            "rol": "agente",
+            "texto": "Según el documento **Arquitectura de Microservicios y Mapa de Dominios.pdf**, la arquitectura de Santos Pegasus Soluciones está compuesta por los siguientes microservicios:\n\n1. **auth-service** (Puerto: 8081)  \n   - **Dominio:** Identidad y Seguridad  \n   - **Base de Datos:** PostgreSQL  \n   - **Squad Owner:** Squad Hermes  \n\n2. **user-service** (Puerto: 8082)  \n   - **Dominio:** Usuarios y Perfiles  \n   - **Base de Datos:** PostgreSQL  \n   - **Squad Owner:** Squad Hermes  \n\n3. **agendio-scheduling-service** (Puerto: 8083)  \n   - **Dominio:** Agendamiento (Core)  \n   - **Base de Datos:** PostgreSQL  \n   - **Squad Owner:** Squad Agendio Core  \n\n4. **agendio-notification-service** (Puerto: 8084)  \n   - **Dominio:** Notificaciones  \n   - **Base de Datos:** Stateless (sin base de datos propia)  \n   - **Squad Owner:** Squad Agendio  \n\n5. **payment-service** (Puerto: 8085)  \n   - **Dominio:** Pagos  \n   - **Base de Datos:** PostgreSQL  \n\n6. **ai-assistant-service** (Puerto: 8087)  \n   - **Dominio:** Asistente de IA  \n   - **Base de Datos:** Pinecone DB (Vector Store)  \n\n7. **medical-records-service** (Puerto: 8088)  \n   - **Dominio:** Registros Médicos  \n   - **Base de Datos:** MongoDB / AWS DocumentDB  \n\n8. **audit-service** (Puerto: 8086)  \n   - **Dominio:** Auditoría  \n   - **Base de Datos:** PostgreSQL  \n\nEstos microservicios están organizados por dominios de negocio y siguen los principios arquitectónicos definidos en el documento, como **High Cohesion, Low Coupling**, **Database per Service**, y **API First**.  \n\n*Fuente: [3] Documento: Arquitectura de Microservicios y Mapa de Dominios.pdf*",
+            "timestamp": "2026-07-13T16:09:10.638950",
+            "metadatos": {
+              "confianza": 0.627,
+              "citas": [
+                "Arquitectura de Microservicios y Mapa de Dominios.pdf",
+                "Santo Pegasus Soluciones Guía Oficial de Ingeniería Backend.pdf"
+              ]
+            }
+          },
+          {
+            "rol": "usuario",
+            "texto": "ya ahora explicame un poco mas detallado sobre esto con ejemplos",
+            "timestamp": "2026-07-13T16:10:03.257163",
+            "metadatos": {}
+          },
+          {
+            "rol": "agente",
+            "texto": "Según los documentos internos de **Santo Pegasus Soluciones Guía Oficial de Ingeniería Backend.pdf** y **Santo Pegasus Soluciones Guía Oficial de Ingeniería FrontEnd.pdf**, aquí tienes una explicación más detallada sobre los principios y patrones mencionados, con ejemplos prácticos:\n\n### **Principios SOLID en Backend (Documento [2] y [4])**\n\n1. **Single Responsibility Principle (SRP)**:  \n   Un componente debe tener una única responsabilidad.  \n   **Ejemplo**: En el backend, un `Service` debe manejar solo la lógica de negocio, no la validación de entrada o la comunicación con la base de datos.  \n   ```java\n   // Incorrecto: Service con múltiples responsabilidades\n   @Service\n   public class UserService {\n       public User createUser(UserDTO userDTO) {\n           validateUser(userDTO); // Validación aquí\n           return userRepository.save(mapToEntity(userDTO));\n       }\n   }\n\n   // Correcto: Validación en Controller\n   @RestController\n   public class UserController {\n       @PostMapping(\"/users\")\n       public User createUser(@Valid @RequestBody UserDTO userDTO) {\n           return userService.createUser(userDTO);\n       }\n   }\n   ```\n\n2. **Open/Closed Principle (OCP)**:  \n   Los componentes deben estar abiertos para extensión pero cerrados para modificación.  \n   **Ejemplo**: Uso de herencia para extender funcionalidades sin modificar el código existente.  \n   ```java\n   // Clase base\n   public class PaymentProcessor {\n       public void processPayment(double amount) {\n           // Lógica común\n       }\n   }\n\n   // Extensión específica\n   public class CreditCardPaymentProcessor extends PaymentProcessor {\n       @Override\n       public void processPayment(double amount) {\n           // Lógica específica para tarjeta de crédito\n       }\n   }\n   ```\n\n3. **Liskov Substitution Principle (LSP)**:  \n   Las subclases deben poder sustituir a sus clases base sin alterar el comportamiento.  \n   **Ejemplo**: Si una clase `PremiumUser` hereda de `User`, debe mantener todas las funcionalidades de `User`.\n\n4. **Interface Segregation Principle (ISP)**:  \n   Las interfaces deben ser específicas y no forzar implementaciones innecesarias.  \n   **Ejemplo**:  \n   ```java\n   // Incorrecto: Interfaz genérica\n   public interface UserManager {\n       void createUser();\n       void sendEmail(); // No todos los usuarios necesitan esto\n   }\n\n   // Correcto: Interfaces segregadas\n   public interface UserCreator {\n       void createUser();\n   }\n\n   public interface EmailSender {\n       void sendEmail();\n   }\n   ```\n\n5. **Dependency Inversion Principle (DIP)**:  \n   Depender de abstracciones, no de implementaciones concretas.  \n   **Ejemplo**: Uso de inyección de dependencias en Spring.  \n   ```java\n   @Service\n   public class OrderService {\n       private final PaymentGateway paymentGateway;\n\n       public OrderService(PaymentGateway paymentGateway) {\n           this.paymentGateway = paymentGateway;\n       }\n\n       public void processOrder(Order order) {\n           paymentGateway.processPayment(order.getTotal());\n       }\n   }\n   ```\n\n---\n\n### **Principios DRY, KISS y YAGNI (Documento [1] y [2])**\n\n1. **DRY (Don't Repeat Yourself)**:  \n   **Ejemplo**: Extraer lógica repetida a un método utilitario.  \n   ```java\n   // Repetición\n   public void saveUser(User user) {\n       validateEmail(user.getEmail());\n       userRepository.save(user);\n   }\n\n   public void updateUser(User user) {\n       validateEmail(user.getEmail());\n       userRepository.update(user);\n   }\n\n   // Correcto: Método utilitario\n   private void validateEmail(String email) {\n       if (!email.matches(\"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\\\.[a-zA-Z]{2,}$\")) {\n           throw new InvalidEmailException();\n       }\n   }\n   ```\n\n2. **KISS (Keep It Simple, Stupid)**:  \n   **Ejemplo**: Evitar soluciones complejas cuando una simple funciona.  \n   ```java\n   // Complejo: Uso innecesario de streams\n   List<String> names = users.stream()\n                             .map(User::getName)\n                             .collect(Collectors.toList());\n\n   // Simple: Bucle tradicional\n   List<String> names = new ArrayList<>();\n   for (User user : users) {\n       names.add(user.getName());\n   }\n   ```\n\n3. **YAGNI (You Aren't Gonna Need It)**:  \n   **Ejemplo**: No implementar funcionalidades futuras no solicitadas.  \n   *Caso práctico*: Evitar agregar campos en una entidad para un supuesto reporte futuro que aún no está definido.\n\n---\n\n### **Patrones Arquitectónicos y de Diseño (Documento [3] y",
+            "timestamp": "2026-07-13T16:10:03.271458",
+            "metadatos": {
+              "confianza": 0.474,
+              "citas": [
+                "Santo Pegasus Soluciones Guía Oficial de Ingeniería Backend.pdf",
+                "Santo Pegasus Soluciones Guía Oficial de Ingeniería FrontEnd.pdf"
+              ]
+            }
+          },
+          {
+            "rol": "usuario",
+            "texto": "si ejemplos textuales no en codigo",
+            "timestamp": "2026-07-13T16:10:45.643739",
+            "metadatos": {}
+          },
+          {
+            "rol": "agente",
+            "texto": "Según los documentos internos de **Santo Pegasus Soluciones Guía Oficial de Ingeniería Backend.pdf** y **Santo Pegasus Soluciones Guía Oficial de Ingeniería FrontEnd.pdf**, aquí tienes ejemplos textuales (no en código) de cómo se aplican los principios y prácticas en la empresa:\n\n1. **Principio DRY (Don't Repeat Yourself)**:  \n   - *Ejemplo*: Si en dos partes del sistema se valida que un usuario tenga al menos 18 años, esa lógica se extrae a un método utilitario llamado `esMayorDeEdad(usuario)`. Así, si la regla cambia (por ejemplo, a 21 años), solo se modifica en un lugar.  \n\n2. **Principio KISS (Keep It Simple, Stupid)**:  \n   - *Ejemplo*: En lugar de usar un algoritmo complejo para calcular descuentos, se opta por una fórmula simple y clara, como `precioFinal = precioOriginal * (1 - porcentajeDescuento)`. Esto facilita que cualquier desarrollador entienda y mantenga el código.  \n\n3. **Principio YAGNI (You Aren't Gonna Need It)**:  \n   - *Ejemplo*: Si se está desarrollando un formulario de registro de usuarios, no se implementa un campo para \"fecha de expiración de cuenta\" porque no es un requisito actual, aunque se piense que podría ser útil en el futuro.  \n\n4. **Feedback en Code Review**:  \n   - *Ejemplo de pregunta sugestiva*:  \n     *\"¿Qué te parece extraer esta validación a un método llamado `validarFormatoEmail` para mejorar la legibilidad y reutilización?\"*  \n   - *Ejemplo no recomendado*:  \n     *\"Cambia esta validación a un método separado.\"*  \n\n5. **Manejo de Secretos**:  \n   - *Ejemplo*: En lugar de escribir una clave de API directamente en el código (`apiKey = \"12345\"`), se usa una variable de entorno (`apiKey = process.env.API_KEY`) y se almacena el valor real en un gestor de secretos como AWS Secrets Manager.  \n\n6. **Conventional Commits**:  \n   - *Ejemplo*:  \n     `feat(usuario): añade validación de email en el formulario de registro`  \n     En este caso, `feat` indica una nueva funcionalidad, `usuario` es el ámbito, y la descripción es clara y en imperativo.  \n\n7. **Web Vitals**:  \n   - *Ejemplo*: Si una nueva funcionalidad en el dashboard aumenta el **LCP (Largest Contentful Paint)** de 2.0s a 4.5s, no se puede desplegar a producción porque supera el umbral máximo permitido (≤ 4.0s).  \n\nEstos ejemplos ilustran cómo se aplican los principios y prácticas en el día a día de Santo Pegasus Soluciones, siempre priorizando la claridad, seguridad y eficiencia.",
+            "timestamp": "2026-07-13T16:10:45.655509",
+            "metadatos": {
+              "confianza": 0.485,
+              "citas": [
+                "Manual de Onboarding para Nuevos Desarrolladores.pdf",
+                "Santo Pegasus Soluciones Guía Oficial de Ingeniería Backend.pdf",
+                "Santo Pegasus Soluciones Guía Oficial de Ingeniería FrontEnd.pdf"
+              ]
+            }
+          }
+        ],
+        "creado_en": "2026-07-13T16:09:00.900080",
+        "actualizado_en": "2026-07-13T16:10:45.655521"
+      }
+    ]
+  }
+}
