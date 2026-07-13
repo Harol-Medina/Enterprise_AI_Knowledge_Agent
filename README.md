@@ -1,20 +1,30 @@
-# 🧠 Agente de Conocimiento Empresarial — Santos Pegasus Soluciones
+# Agente de Conocimiento Empresarial — Santos Pegasus Soluciones
 
-> **Sistema de inteligencia artificial RAG** que permite a los colaboradores consultar documentación interna en **lenguaje natural**. Pipeline completo con búsqueda vectorial, generación de respuestas e interfaz moderna.
+Sistema de inteligencia artificial RAG que permite a los colaboradores consultar documentación interna en lenguaje natural. Incluye búsqueda vectorial, generación de respuestas con IA e interfaz web moderna.
 
-**Estado**: ✅ Producción  
-**Última actualización**: 13 de Julio 2026  
-**Versión**: 1.0.0
+[![README](https://img.shields.io/badge/docs-README-blue)](README.md)
+[![MIT License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
 ---
 
-## 📚 Documentación
+### Demo en video
 
-| Documento | Contenido | Tiempo |
-|---|---|---|
-| **[INICIO_RAPIDO.md](INICIO_RAPIDO.md)** | 🚀 5 pasos para ejecutar el sistema | 5 min |
-| **[ARQUITECTURA.md](ARQUITECTURA.md)** | 🏗️ Diseño hexagonal, flujos RAG, capas | 15 min |
-| **README.md** | 📖 Este archivo - referencia completa | 30 min |
+> 📹 **[Ver demostración del sistema](https://youtu.be/tu-video-aqui)**
+> *(Agrega aquí el enlace a tu video de demostración)*
+
+---
+
+### Documentos de conocimiento indexados
+
+Estos son los 5 documentos internos que el agente consulta para responder preguntas:
+
+| # | Documento |
+|---|-----------|
+| 1 | Manual de Onboarding para Nuevos Desarrolladores.pdf |
+| 2 | Santo Pegasus Soluciones Guía Oficial de Ingeniería Backend.pdf |
+| 3 | Santo Pegasus Soluciones Guía Oficial de Ingeniería FrontEnd.pdf |
+| 4 | PROTOCOLO DE RESPUESTA A INCIDENTES Y POST-MORTEMS.pdf |
+| 5 | Arquitectura de Microservicios y Mapa de Dominios.pdf |
 
 ---
 
@@ -24,7 +34,7 @@
 2. [Arquitectura](#arquitectura)
 3. [Estructura del proyecto](#estructura-del-proyecto)
 4. [Pipeline RAG](#pipeline-rag)
-5. [Sistema de usuarios y roles](#sistema-de-usuarios-y-roles)
+5. [Usuarios y roles](#usuarios-y-roles)
 6. [Requisitos previos](#requisitos-previos)
 7. [Configuración](#configuración)
 8. [Ejecución local](#ejecución-local)
@@ -38,57 +48,45 @@
 
 ## Tecnologías
 
-| Capa | Tecnología | Versión | Propósito |
-|------|-----------|---------|-----------|
-| Backend | Python + FastAPI | 3.12 / 0.115 | API REST, lógica RAG |
-| LLM — Chat | Cohere command-a-03-2025 | cohere 5.11 | Generación de respuestas |
-| LLM — Embeddings | Cohere embed-multilingual-v3.0 | cohere 5.11 | Vectores semánticos 1024 dims |
-| Base vectorial | ChromaDB | 0.6.3 | Almacenamiento y búsqueda semántica |
-| Extracción PDF | PyPDF2 | 3.0.1 | Lectura de documentos internos |
+| Capa | Tecnología | Versión | Para qué sirve |
+|------|-----------|---------|----------------|
+| Backend | Python + FastAPI | 3.12 / 0.115 | API REST y lógica RAG |
+| Chat (LLM) | Cohere command-a-03-2025 | 5.11 | Genera las respuestas en lenguaje natural |
+| Embeddings | Cohere embed-multilingual-v3.0 | 5.11 | Convierte texto en vectores de 1024 dims |
+| Base vectorial | ChromaDB | 0.6.3 | Almacena y busca fragmentos por similitud |
+| PDFs | PyPDF2 | 3.0.1 | Extrae texto de los documentos internos |
 | Búsqueda web | Tavily | 0.5.0 | Complemento web opcional |
 | Frontend | React 18 + Vite | 18 / 5.4 | Interfaz de usuario |
-| Estilos | Tailwind CSS | 3.4 | Diseño del frontend |
-| Routing | React Router v6 | 6.21 | Navegación por páginas |
+| Estilos | Tailwind CSS | 3.4 | Diseño visual |
+| Routing | React Router v6 | 6.21 | Navegación entre páginas |
 | Iconos | Lucide React | 0.469 | Íconos del sistema |
-| Pruebas | pytest + FastAPI TestClient | 8.3 | Suite de pruebas QA |
-| Contenedores | Docker + Docker Compose | — | Despliegue reproducible |
+| Pruebas | pytest + TestClient | 8.3 | Suite QA automatizada |
+| Contenedores | Docker + Compose | — | Despliegue reproducible |
 
 ---
 
 ## Arquitectura
 
-El proyecto sigue **arquitectura hexagonal** (Ports & Adapters) tanto en el backend como en el frontend.
-
-### Principio central
-
-El dominio no depende de ningún framework externo. Las dependencias concretas (Cohere, ChromaDB, archivos JSON) se inyectan desde el Composition Root (`orchestrator.py`) hacia adentro, nunca al revés.
+El proyecto usa **arquitectura hexagonal** (Ports & Adapters). El dominio central no depende de ningún framework — Cohere, ChromaDB y los archivos JSON se inyectan desde el `orchestrator.py` hacia adentro.
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                        FRONTEND (React)                      │
-│  Login → Dashboard → Chat → Documentos → Perfil → Admin     │
-│               servicios/api.js  (capa HTTP)                  │
-└──────────────────────┬──────────────────────────────────────┘
-                       │ HTTP / JSON
-┌──────────────────────▼──────────────────────────────────────┐
-│                   BACKEND (FastAPI)                          │
-│                                                              │
-│  ┌──────────┐    ┌──────────────┐    ┌──────────────────┐  │
-│  │  api.py  │───▶│ Orquestador  │───▶│  ServicioAgente  │  │
-│  │(endpoints)│   │(Compos. Root)│    │  ServicioRag     │  │
-│  └──────────┘    └──────────────┘    └────────┬─────────┘  │
-│                                               │              │
-│  ┌─────────────────────────────────────────────▼──────────┐ │
-│  │                    DOMINIO (puro)                       │ │
-│  │  entities.py  ·  ports.py  (interfaces abstractas)     │ │
-│  └────────────────────────┬────────────────────────────── ┘ │
-│                            │ implementado por                │
-│  ┌─────────────────────────▼────────────────────────────┐   │
-│  │               INFRAESTRUCTURA (adaptadores)           │   │
-│  │  ClienteIA (Cohere)  ·  RepositorioVectorialChroma    │   │
-│  │  RepositorioDocumentosLocal  ·  RepositorioUsuarios   │   │
-│  └──────────────────────────────────────────────────────┘   │
-└─────────────────────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────────┐
+│                     FRONTEND (React)                      │
+│   Login → Dashboard → Chat → Documentos → Perfil → Admin │
+│                    servicios/api.js                        │
+└─────────────────────────┬────────────────────────────────┘
+                          │ HTTP / JSON
+┌─────────────────────────▼────────────────────────────────┐
+│                    BACKEND (FastAPI)                       │
+│                                                            │
+│   api.py ──► orchestrator.py ──► ServicioAgente           │
+│                                        │                   │
+│              DOMINIO (puro)            │                   │
+│              entities.py · ports.py ◄─┘                   │
+│                                                            │
+│              INFRAESTRUCTURA (adaptadores)                 │
+│              ClienteIA · ChromaDB · RepositorioUsuarios    │
+└────────────────────────────────────────────────────────────┘
 ```
 
 ---
@@ -97,187 +95,139 @@ El dominio no depende de ningún framework externo. Las dependencias concretas (
 
 ```
 Enterprise_AI_Knowledge_Agent/
-│
-├── .env                          ← Variables de entorno (claves API, rutas)
+├── .env                          ← Claves API y configuración
+├── docker-compose.yml
 │
 ├── BackEnd/
-│   ├── requirements.txt          ← Dependencias Python
-│   ├── Dockerfile
-│   ├── data/
-│   │   └── usuarios.json         ← Usuarios y historial de chat (persistencia JSON)
+│   ├── requirements.txt
+│   ├── data/usuarios.json        ← Usuarios y historial (sin BD externa)
 │   └── app/
-│       ├── main.py               ← Punto de entrada FastAPI (CORS, logging)
-│       ├── api.py                ← Todos los endpoints REST
+│       ├── main.py               ← Arranque FastAPI
+│       ├── api.py                ← Endpoints REST
 │       ├── orchestrator.py       ← Composition Root (inyección de dependencias)
-│       ├── schemas.py            ← Contratos Pydantic entrada/salida
-│       │
-│       ├── domain/               ← NÚCLEO — sin dependencias externas
-│       │   ├── entities.py       ← FragmentoDocumento, ResultadoConsulta, EstadoApiKey
-│       │   └── ports.py          ← Interfaces abstractas (puertos)
-│       │
-│       ├── infrastructure/       ← ADAPTADORES DE SALIDA
-│       │   ├── repositorio_documentos.py   ← Lee PDFs del disco
-│       │   ├── repositorio_vectorial.py    ← ChromaDB (embeddings + búsqueda)
-│       │   └── repositorio_usuarios.py     ← Usuarios y chat (JSON local)
-│       │
-│       └── services/             ← CASOS DE USO
-│           ├── cliente_ia.py               ← Cohere (embeddings + chat)
-│           ├── servicio_agente.py          ← Caso de uso principal
-│           ├── servicio_rag.py             ← Pipeline RAG completo
-│           ├── servicio_tavily.py          ← Búsqueda web complementaria
-│           └── procesamiento_documentos.py ← Extracción y chunking de PDFs
+│       ├── schemas.py            ← Modelos Pydantic
+│       ├── domain/
+│       │   ├── entities.py       ← FragmentoDocumento, ResultadoConsulta
+│       │   └── ports.py          ← Interfaces abstractas
+│       ├── infrastructure/
+│       │   ├── repositorio_documentos.py
+│       │   ├── repositorio_vectorial.py  ← ChromaDB
+│       │   └── repositorio_usuarios.py   ← JSON local
+│       └── services/
+│           ├── cliente_ia.py              ← Cohere (chat + embeddings)
+│           ├── servicio_agente.py         ← Caso de uso principal
+│           ├── servicio_rag.py            ← Pipeline RAG
+│           ├── servicio_tavily.py         ← Búsqueda web
+│           └── procesamiento_documentos.py
 │
 ├── FrontEnd/
-│   ├── package.json
-│   ├── vite.config.js            ← Proxy /api → localhost:8000 en desarrollo
-│   ├── tailwind.config.js
+│   ├── vite.config.js            ← Proxy /api → localhost:8000
 │   └── src/
-│       ├── App.jsx               ← Rutas protegidas con React Router v6
-│       ├── main.jsx              ← Punto de entrada React
-│       ├── styles.css            ← Estilos globales + clases utilitarias
-│       │
-│       ├── contextos/
-│       │   └── AuthContexto.jsx  ← Estado de autenticación global
-│       │
-│       ├── servicios/
-│       │   └── api.js            ← Todas las llamadas al backend
-│       │
+│       ├── App.jsx               ← Rutas protegidas
+│       ├── contextos/AuthContexto.jsx
+│       ├── servicios/api.js      ← Todas las llamadas al backend
 │       ├── componentes/
-│       │   ├── Sidebar.jsx       ← Barra lateral con nav + historial + usuario
-│       │   └── RutaProtegida.jsx ← Layout con sidebar para rutas autenticadas
-│       │
+│       │   ├── Sidebar.jsx
+│       │   └── RutaProtegida.jsx
 │       └── paginas/
-│           ├── Login.jsx         ← Pantalla de inicio de sesión
-│           ├── Dashboard.jsx     ← Panel principal con métricas
-│           ├── Chat.jsx          ← Chat IA con historial de conversaciones
-│           ├── Documentos.jsx    ← Lista de documentos del índice
-│           ├── IndiceVectorial.jsx ← Gestión de ChromaDB (indexar/reindexar)
-│           ├── Perfil.jsx        ← Editar perfil y cambiar contraseña
-│           └── Admin.jsx         ← Panel de administración (solo admin)
+│           ├── Login.jsx
+│           ├── Dashboard.jsx
+│           ├── Chat.jsx          ← Chat con historial de conversaciones
+│           ├── Documentos.jsx
+│           ├── IndiceVectorial.jsx
+│           ├── Perfil.jsx        ← Editar perfil y contraseña
+│           └── Admin.jsx         ← Solo para el rol admin
 │
-├── Docs/                         ← PDFs fuente de conocimiento (5 documentos)
-│   ├── Manual de Onboarding para Nuevos Desarrolladores.pdf
-│   ├── Santo Pegasus Soluciones Guía Oficial de Ingeniería Backend.pdf
-│   ├── Santo Pegasus Soluciones Guía Oficial de Ingeniería FrontEnd.pdf
-│   ├── PROTOCOLO DE RESPUESTA A INCIDENTES Y POST-MORTEMS.pdf
-│   └── Arquitectura de Microservicios y Mapa de Dominios.pdf
+├── Docs/                         ← Los 5 PDFs fuente de conocimiento
 │
-├── QA/
-│   ├── pytest.ini
-│   └── tests/
-│       ├── conftest.py           ← Configuración de paths para pytest
-│       └── test_api.py           ← 63 pruebas (integración + unitarias)
-│
-└── docker-compose.yml
+└── QA/
+    └── tests/test_api.py         ← 63 pruebas automatizadas
 ```
 
 ---
 
 ## Pipeline RAG
 
-Cuando un colaborador hace una pregunta, el sistema ejecuta este flujo:
+Flujo completo desde la pregunta hasta la respuesta:
 
 ```
 Pregunta del usuario
         │
         ▼
-1. EMBEDDING DE LA CONSULTA
-   Cohere embed-multilingual-v3.0
-   input_type = "search_query"
-   → vector de 1024 dimensiones
+1. Embedding de la consulta
+   Cohere embed-multilingual-v3.0 → vector 1024 dims
         │
         ▼
-2. BÚSQUEDA SEMÁNTICA EN CHROMADB
-   Métrica: similitud coseno (HNSW)
-   Se recuperan los 5 fragmentos más similares
-   Umbral mínimo: similitud ≥ 0.25
+2. Búsqueda semántica en ChromaDB
+   Similitud coseno (HNSW) · Top 5 fragmentos · Umbral ≥ 0.25
         │
         ▼
-3. FILTRO DE RELEVANCIA
-   Se descartan fragmentos por debajo del umbral
-   Si no hay nada relevante → respuesta de fallback
+3. Búsqueda web con Tavily (opcional)
+   Solo si está habilitado + consulta técnica + confianza docs ≥ 0.25
         │
         ▼
-4. BÚSQUEDA WEB (opcional)
-   Tavily busca en dominios confiables predefinidos
-   Solo si: Tavily habilitado + consulta técnica + confianza docs ≥ 0.25
+4. Construcción del prompt
+   Rol del agente + historial (4 msgs) + contexto + pregunta
         │
         ▼
-5. CONSTRUCCIÓN DEL PROMPT
-   Sistema: rol del agente Santos Pegasus
-   Historial: últimos 4 mensajes de la conversación
-   Contexto: fragmentos internos + fuentes web
-   Pregunta actual
+5. Generación con Cohere command-a-03-2025
+   Temperatura 0.2 · Máx 1024 tokens
         │
         ▼
-6. GENERACIÓN CON COHERE command-a-03-2025
-   temperatura = 0.2 (respuestas factuales)
-   max_tokens = 1024
-        │
-        ▼
-7. RESPUESTA AL USUARIO
-   Texto + fuente principal + lista de citas + nivel de confianza
+6. Respuesta al usuario
+   Texto + fuente + citas + nivel de confianza
 ```
 
-### Chunking de documentos
-
-Los PDFs se dividen en fragmentos antes de indexar:
-
-- **Método**: división por palabras con solapamiento
-- **Tamaño**: 400 palabras por fragmento (configurable via `CHUNK_TAMANO`)
-- **Solapamiento**: 60 palabras (configurable via `CHUNK_SOLAPAMIENTO`)
-- **Deduplicación**: los fragmentos ya indexados no se reinsertan (control por ID)
-- **Batch embeddings**: Cohere acepta 96 textos por llamada — se usan lotes de 90 para respetar el límite del plan trial
+**Chunking de documentos:**
+- Fragmentos de 400 palabras con 60 de solapamiento
+- Lotes de 90 textos por llamada a la API (evita el rate limit del plan trial)
+- Deduplicación automática — no se reindexan fragmentos ya existentes
 
 ---
 
-## Sistema de usuarios y roles
+## Usuarios y roles
 
-Los usuarios se almacenan en `BackEnd/data/usuarios.json` (persistencia JSON, sin base de datos externa).
+Los usuarios se guardan en `BackEnd/data/usuarios.json`, sin base de datos externa.
 
-### Usuarios disponibles
+### Credenciales
 
-| Usuario | Contraseña | Rol | Descripción |
-|---------|-----------|-----|-------------|
-| `admin` | `admin` | admin | Acceso completo a todas las funciones |
-| `backend` | `Backend2024!` | backend | Acceso a documentación backend |
-| `frontend` | `Frontend2024!` | frontend | Acceso a documentación frontend |
-| `fullstack` | `Fullstack2024!` | fullstack | Acceso completo a documentación técnica |
+| Usuario | Contraseña | Rol |
+|---------|-----------|-----|
+| `admin` | `Admin2024!` | Administrador completo |
+| `backend` | `Backend2024!` | Desarrollador backend |
+| `frontend` | `Frontend2024!` | Desarrollador frontend |
+| `fullstack` | `Fullstack2024!` | Acceso técnico completo |
 
-### Visibilidad de documentos por rol
+### Qué puede ver cada rol
 
 | Documento | admin | fullstack | backend | frontend |
 |-----------|:-----:|:---------:|:-------:|:--------:|
 | Manual de Onboarding | ✓ | ✓ | ✓ | ✓ |
-| Guía de Ingeniería Backend | ✓ | ✓ | ✓ | — |
-| Guía de Ingeniería FrontEnd | ✓ | ✓ | — | ✓ |
+| Guía Backend | ✓ | ✓ | ✓ | — |
+| Guía FrontEnd | ✓ | ✓ | — | ✓ |
 | Protocolo de Incidentes | ✓ | ✓ | — | — |
 | Arquitectura y Microservicios | ✓ | ✓ | ✓ | ✓ |
 
-### Permisos del admin
+### Panel de administración (solo `admin`)
 
-El usuario `admin` puede desde el panel de administración:
-- Ver estadísticas de uso (conversaciones, mensajes por usuario)
-- Editar el perfil de cualquier usuario
-- Cambiar la contraseña de cualquier usuario
-- Activar o inactivar cuentas
-- Subir nuevos documentos al directorio `Docs/`
+- Estadísticas de uso por usuario
+- Editar perfil y cambiar contraseña de cualquier usuario
+- Activar / inactivar cuentas
+- Subir nuevos documentos al sistema
 
 ---
 
 ## Requisitos previos
 
-- **Python 3.12** (no 3.14 — ChromaDB no soporta 3.14 aún)
+- **Python 3.12** — ChromaDB no soporta Python 3.14 todavía
 - **Node.js 20+**
-- **Clave de API de Cohere** — [dashboard.cohere.com/api-keys](https://dashboard.cohere.com/api-keys)
-- **Clave de API de Tavily** (opcional) — [app.tavily.com](https://app.tavily.com)
-- **Docker** (solo para despliegue con contenedores)
+- **Clave de Cohere** — [dashboard.cohere.com/api-keys](https://dashboard.cohere.com/api-keys)
+- **Clave de Tavily** (opcional) — [app.tavily.com](https://app.tavily.com)
 
-Para verificar la versión de Python disponible:
+Para confirmar que tienes Python 3.12:
 ```cmd
 py -0
 ```
-Debe aparecer `Python 3.12` en la lista.
 
 ---
 
@@ -286,97 +236,63 @@ Debe aparecer `Python 3.12` en la lista.
 Edita el archivo `.env` en la raíz del proyecto:
 
 ```env
-# ── Cohere (obligatorio) ─────────────────────────────────────
+# Obligatorio
 COHERE_API_KEY=tu-clave-cohere-aqui
 COHERE_MODELO_CHAT=command-a-03-2025
 COHERE_MODELO_EMBEDDING=embed-multilingual-v3.0
 
-# ── Tavily (opcional — búsqueda web complementaria) ──────────
+# Opcional — búsqueda web
 TAVILY_API_KEY=tu-clave-tavily-aqui
 TAVILY_HABILITADO=false
-TAVILY_DOMINIOS_PERMITIDOS=docs.python.org,fastapi.tiangolo.com,owasp.org,kubernetes.io
 
-# ── ChromaDB ─────────────────────────────────────────────────
+# ChromaDB
 CHROMA_DIRECTORIO_PERSISTENCIA=./chroma_db
 CHROMA_COLECCION=santos_pegasus_conocimiento
 
-# ── Documentos ───────────────────────────────────────────────
+# Documentos
 DOCUMENTOS_DIRECTORIO=../Docs
 CHUNK_TAMANO=400
 CHUNK_SOLAPAMIENTO=60
-
-# ── General ──────────────────────────────────────────────────
-AMBIENTE=development
-LOG_NIVEL=INFO
 ```
 
-> **Importante:** La clave de Cohere del plan trial tiene límite de 100 llamadas/minuto. El sistema maneja esto automáticamente con backoff exponencial y batch embeddings.
+> El plan trial de Cohere tiene límite de 100 llamadas/minuto. El sistema lo maneja automáticamente con reintentos y batch embeddings.
 
 ---
 
 ## Ejecución local
 
-### 1. Clonar / ubicarse en el proyecto
-
-```cmd
-cd C:\ruta\al\proyecto\Enterprise_AI_Knowledge_Agent
-```
-
-### 2. Crear entorno virtual con Python 3.12
-
+**Paso 1 — Crear entorno virtual con Python 3.12:**
 ```cmd
 py -3.12 -m venv .venv
 .venv\Scripts\activate
 ```
 
-Debe aparecer `(.venv)` al inicio del prompt.
-
-### 3. Instalar dependencias del backend
-
+**Paso 2 — Instalar dependencias:**
 ```cmd
 pip install -r BackEnd\requirements.txt
 ```
 
-### 4. Configurar la clave de API
+**Paso 3 — Configurar la clave de Cohere en `.env`**
 
-Editar `.env` y poner la clave real de Cohere:
-```
-COHERE_API_KEY=tu-clave-aqui
-```
-
-### 5. Iniciar el backend
-
+**Paso 4 — Iniciar el backend:**
 ```cmd
 cd BackEnd
 py -3.12 -m uvicorn app.main:app --reload --port 8000
 ```
 
-La primera vez tarda 1–3 minutos porque indexa los 5 PDFs automáticamente:
-```
-INFO | Orquestador iniciando...
-INFO | Coleccion vacia — iniciando ingesta automatica...
-INFO | Generando embeddings para 103 fragmentos nuevos...
-INFO | Ingesta completada: 103 fragmentos.
-INFO | Uvicorn running on http://127.0.0.1:8000
-```
+La primera vez indexa los PDFs automáticamente (1–3 minutos). Las siguientes veces arranca en segundos.
 
-Las siguientes veces arranca en segundos porque ChromaDB ya tiene los datos en disco.
-
-### 6. Iniciar el frontend (segunda terminal)
-
+**Paso 5 — Iniciar el frontend (nueva terminal):**
 ```cmd
 cd FrontEnd
 npm install
 npm run dev
 ```
 
-### 7. Abrir en el navegador
-
+**Paso 6 — Abrir en el navegador:**
 ```
 http://localhost:5173
 ```
-
-Inicia sesión con cualquier usuario de la tabla de la sección [Sistema de usuarios](#sistema-de-usuarios-y-roles).
 
 ---
 
@@ -386,11 +302,12 @@ Inicia sesión con cualquier usuario de la tabla de la sección [Sistema de usua
 docker compose up --build
 ```
 
-- Frontend: `http://localhost:80`
-- Backend: `http://localhost:8000`
-- Documentación API: `http://localhost:8000/docs`
+| Servicio | URL |
+|---------|-----|
+| Frontend | http://localhost:80 |
+| Backend | http://localhost:8000 |
+| API docs | http://localhost:8000/docs |
 
-Para detener:
 ```cmd
 docker compose down
 ```
@@ -399,32 +316,29 @@ docker compose down
 
 ## Endpoints de la API
 
-Documentación interactiva completa en `http://localhost:8000/docs`.
+Documentación interactiva completa: `http://localhost:8000/docs`
 
 ### Sistema
-
 | Método | Ruta | Descripción |
 |--------|------|-------------|
-| `GET` | `/api/salud` | Health check — verifica que el servidor esté activo |
-| `GET` | `/api/validar-api` | Verifica que la clave de Cohere es válida |
-| `GET` | `/api/estado-indice` | Fragmentos indexados, documentos disponibles |
+| `GET` | `/api/salud` | Health check |
+| `GET` | `/api/validar-api` | Verifica la clave de Cohere |
+| `GET` | `/api/estado-indice` | Estado de ChromaDB |
 
 ### Documentos
-
 | Método | Ruta | Descripción |
 |--------|------|-------------|
-| `POST` | `/api/indexar` | Indexa o reindexar todos los documentos en ChromaDB |
-| `GET` | `/api/documentos/listar/{username}` | Lista documentos visibles según el rol del usuario |
-| `POST` | `/api/documentos/upload` | Sube un nuevo PDF (solo admin) |
+| `POST` | `/api/indexar` | Indexa los PDFs en ChromaDB |
+| `GET` | `/api/documentos/listar/{username}` | Documentos visibles para el usuario |
+| `POST` | `/api/documentos/upload` | Sube un PDF nuevo (solo admin) |
 
 ### Agente RAG
-
 | Método | Ruta | Descripción |
 |--------|------|-------------|
-| `POST` | `/api/agente/consultar` | Consulta al agente — ejecuta el pipeline RAG completo |
+| `POST` | `/api/agente/consultar` | Consulta principal — ejecuta el pipeline RAG |
 
-Body de ejemplo:
 ```json
+// Body de ejemplo
 {
   "pregunta": "¿Cuánto dura el proceso de onboarding?",
   "id_conversacion": "conv-20260101120000000000",
@@ -432,147 +346,79 @@ Body de ejemplo:
 }
 ```
 
-Respuesta:
-```json
-{
-  "respuesta": "El proceso de onboarding en Santos Pegasus dura 30 días...",
-  "fuente_principal": "Manual de Onboarding para Nuevos Desarrolladores.pdf",
-  "confianza": 0.87,
-  "citas": ["Manual de Onboarding para Nuevos Desarrolladores.pdf"],
-  "sin_respuesta": false,
-  "id_conversacion": "conv-20260101120000000000"
-}
-```
-
-### Autenticación
-
+### Auth y usuarios
 | Método | Ruta | Descripción |
 |--------|------|-------------|
-| `POST` | `/api/auth/login` | Inicia sesión — retorna nombre y rol del usuario |
-
-### Usuarios
-
-| Método | Ruta | Descripción |
-|--------|------|-------------|
-| `GET` | `/api/usuarios` | Lista todos los usuarios (sin contraseñas) |
-| `GET` | `/api/usuarios/{username}` | Datos de un usuario específico |
-| `POST` | `/api/usuarios/cambiar-contrasena` | Cambia la contraseña del usuario |
-| `POST` | `/api/usuarios/actualizar-perfil` | Actualiza nombre, apellido y email |
-| `POST` | `/api/usuarios/actualizar-estado` | Activa o inactiva una cuenta (admin) |
+| `POST` | `/api/auth/login` | Iniciar sesión |
+| `GET` | `/api/usuarios` | Listar usuarios |
+| `POST` | `/api/usuarios/cambiar-contrasena` | Cambiar contraseña |
+| `POST` | `/api/usuarios/actualizar-perfil` | Actualizar nombre y email |
+| `POST` | `/api/usuarios/actualizar-estado` | Activar / inactivar cuenta |
 
 ### Historial de chat
-
 | Método | Ruta | Descripción |
 |--------|------|-------------|
-| `POST` | `/api/chat/conversacion` | Crea una nueva conversación |
-| `GET` | `/api/chat/historial/{username}` | Lista todas las conversaciones del usuario |
-| `GET` | `/api/chat/conversacion/{username}/{conv_id}` | Obtiene mensajes de una conversación |
-| `DELETE` | `/api/chat/conversacion/{username}/{conv_id}` | Elimina una conversación |
+| `POST` | `/api/chat/conversacion` | Nueva conversación |
+| `GET` | `/api/chat/historial/{username}` | Historial del usuario |
+| `GET` | `/api/chat/conversacion/{username}/{conv_id}` | Mensajes de una conversación |
+| `DELETE` | `/api/chat/conversacion/{username}/{conv_id}` | Eliminar conversación |
 
-### Administración
-
+### Admin
 | Método | Ruta | Descripción |
 |--------|------|-------------|
-| `GET` | `/api/admin/estadisticas` | Total usuarios, conversaciones, mensajes por usuario |
+| `GET` | `/api/admin/estadisticas` | Estadísticas de uso del sistema |
 
 ---
 
 ## Pruebas QA
-
-Las pruebas están en `QA/tests/test_api.py`. Usan dobles de prueba (mocks) y no requieren claves de API reales.
 
 ```cmd
 cd QA
 py -3.12 -m pytest tests/ -v
 ```
 
-Resultado esperado: **63 tests pasando**.
+**63 pruebas pasando.** No requieren claves de API reales — usan dobles de prueba.
 
-### Cobertura de pruebas
-
-| Clase de prueba | Cantidad | Qué verifica |
-|----------------|----------|-------------|
-| `TestSalud` | 4 | Health check, versión, mensaje |
-| `TestValidarApi` | 5 | Cohere configurado/no configurado, proveedor |
+| Clase | Tests | Qué verifica |
+|-------|-------|--------------|
+| `TestSalud` | 4 | Health check, versión |
+| `TestValidarApi` | 5 | Clave Cohere válida/inválida |
 | `TestEstadoIndice` | 5 | Fragmentos, documentos, índice vacío |
-| `TestDocumentosPorRol` | 6 | Visibilidad por rol (admin, frontend, backend, fullstack) |
-| `TestConsultarAgente` | 11 | RAG completo, 422 por pregunta corta, persistencia de historial |
-| `TestAuth` | 5 | Login correcto/incorrecto, roles, campos de respuesta |
-| `TestHistorialChat` | 5 | Crear/obtener/eliminar conversaciones, 404 |
-| `TestIndexar` | 3 | 503 sin clave, 200 con clave, campos de respuesta |
-| `TestDominio` | 7 | Entidades puras, clampeo de confianza |
-| `TestServicioRag` | 8 | Pipeline RAG, saludos, fuera de ámbito, fallback LLM |
-| `TestServicioProcesamiento` | 3 | Chunking, IDs únicos, documento inexistente |
-| `TestOrquestador` | 2 | Directorio de documentos existe y contiene PDFs |
+| `TestDocumentosPorRol` | 6 | Visibilidad por rol |
+| `TestConsultarAgente` | 11 | RAG completo, validaciones, historial |
+| `TestAuth` | 5 | Login, credenciales incorrectas, roles |
+| `TestHistorialChat` | 5 | Crear/obtener/eliminar conversaciones |
+| `TestIndexar` | 3 | 503 sin clave, 200 con clave |
+| `TestDominio` | 7 | Entidades puras del dominio |
+| `TestServicioRag` | 8 | Pipeline RAG, saludos, fuera de ámbito |
+| `TestServicioProcesamiento` | 3 | Chunking, IDs únicos |
+| `TestOrquestador` | 2 | Directorio de documentos |
 
 ---
 
 ## Agregar documentos
 
 1. Copia el PDF al directorio `Docs/`
-2. Reindexar desde el frontend: **Índice vectorial → Indexar nuevos documentos**
+2. En el frontend: **Índice vectorial → Indexar nuevos documentos**
 
-O desde la terminal:
+O por terminal:
 ```cmd
-curl -X POST http://localhost:8000/api/indexar ^
-  -H "Content-Type: application/json" ^
-  -d "{\"forzar_reindexacion\": false}"
+curl -X POST http://localhost:8000/api/indexar -H "Content-Type: application/json" -d "{\"forzar_reindexacion\": false}"
 ```
 
-Para reindexar todo desde cero (útil si cambiaste el tamaño de chunk):
-```json
-{ "forzar_reindexacion": true }
+Para reindexar todo desde cero:
+```cmd
+curl -X POST http://localhost:8000/api/indexar -H "Content-Type: application/json" -d "{\"forzar_reindexacion\": true}"
 ```
 
 ---
 
 ## Búsqueda web con Tavily
 
-Por defecto está **deshabilitada**. Para activarla:
+Deshabilitada por defecto. Para activarla:
 
-1. Obtén una clave en [app.tavily.com](https://app.tavily.com)
-2. En `.env`:
-```env
-TAVILY_API_KEY=tvly-tu-clave
-TAVILY_HABILITADO=true
-```
+1. Obtén tu clave en [app.tavily.com](https://app.tavily.com)
+2. En `.env`: `TAVILY_HABILITADO=true` y agrega tu `TAVILY_API_KEY`
 3. Reinicia el backend
 
-El sistema solo consulta la web cuando:
-- La pregunta tiene temas técnicos reconocidos (tecnología, software, arquitectura, etc.)
-- Los documentos internos tienen confianza ≥ 0.25 (la web complementa, no reemplaza)
-- La consulta no está en la lista de temas bloqueados (deportes, entretenimiento, etc.)
-
-Los dominios permitidos por defecto son: `docs.python.org`, `fastapi.tiangolo.com`, `owasp.org`, `kubernetes.io`, `docs.github.com`, `learn.microsoft.com`, `docs.aws.amazon.com`. Se pueden ampliar en `.env`.
-
----
-
-## 🔄 Cambios Recientes (13 de Julio 2026)
-
-### Limpieza de Código
-
-- ✅ **Eliminados 7 archivos temporales** no necesarios del repositorio
-- ✅ **Eliminados iconos SVG inline** — ahora usa imagen real `Logo_Menu.png`
-- ✅ **Usuarios deprecated eliminados**: `admin.santos`, `carlos.dev`, `maria.dev`
-- ✅ **Código no utilizado limpiado** de componentes React
-
-### Mejoras de UI
-
-- ✅ **Logo mejorado en Sidebar**: 
-  - Expandido: `Logo (32px) + "Santos Pegasus" + "SOLUCIONES"` (naranja)
-  - Colapsado: `Logo (40px)` — mucho más visible
-- ✅ **Botón toggle movido a header global**: Aparece en todas las vistas (Dashboard, Chat, Documentos, Admin, etc.)
-- ✅ **Sidebar consistente en todas las páginas**: Navegación disponible en todo el sistema
-
-### Documentación
-
-- ✅ **README.md actualizado** con usuarios actuales y cambios recientes
-- ✅ **ARQUITECTURA.md creado**: Explicación completa del diseño hexagonal
-- ✅ **INICIO_RAPIDO.md creado**: Guía de 5 pasos para ejecutar el sistema
-
-### Estado del Sistema
-
-- ✅ **63 pruebas QA pasando**
-- ✅ **Código limpio y listo para producción**
-- ✅ **Documentación completa y actualizada**
-- ✅ **Hexagonal architecture implementada correctamente**
+El sistema consulta la web solo cuando la pregunta es técnica, hay confianza mínima en los documentos internos y no es un tema fuera de ámbito (deportes, entretenimiento, etc.). Los documentos internos siempre son la fuente principal.
